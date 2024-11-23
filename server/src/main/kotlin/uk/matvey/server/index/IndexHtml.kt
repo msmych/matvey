@@ -167,7 +167,10 @@ object IndexHtml {
             +": Kotlin HTTP utilities"
         }
         div {
-            +"More stuff is on the way"
+            +"More stuff is on the way, in the meantime, you can check out my "
+            a(href = "https://x.com/matvey_uk") {
+                +"X account"
+            }
         }
     }
 
