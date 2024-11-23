@@ -11,6 +11,8 @@ import uk.matvey.server.index.IndexHtml.settingsMenuItem
 import uk.matvey.server.index.getLoad
 import uk.matvey.server.login.AuthJwt.Required.accountPrincipal
 import uk.matvey.server.login.AuthJwt.Required.authJwtRequired
+import uk.matvey.server.settings.SettingsHtml.password
+import uk.matvey.server.settings.SettingsHtml.passwordEdit
 import uk.matvey.server.settings.SettingsHtml.settings
 import uk.matvey.server.settings.SettingsHtml.username
 import uk.matvey.server.settings.SettingsHtml.usernameEdit
@@ -51,6 +53,31 @@ fun Route.settingsRouting() {
                     call.respondHtml {
                         body {
                             usernameEdit()
+                        }
+                    }
+                }
+            }
+            route("/password") {
+                get {
+                    call.respondHtml {
+                        body {
+                            password()
+                        }
+                    }
+                }
+                patch {
+                    call.respondHtml {
+                        body {
+                            password()
+                        }
+                    }
+                }
+            }
+            route("/password-edit") {
+                get {
+                    call.respondHtml {
+                        body {
+                            passwordEdit()
                         }
                     }
                 }

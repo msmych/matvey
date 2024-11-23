@@ -21,6 +21,18 @@ object MatveyHtml {
         div(allClasses, block)
     }
 
+    fun HtmlBlockTag.t1(text: String) = div(classes = "t1") {
+        +text
+    }
+
+    fun HtmlBlockTag.t2(text: String) = div(classes = "t2") {
+        +text
+    }
+
+    fun HtmlBlockTag.t3(text: String) = div(classes = "t3") {
+        +text
+    }
+
     fun HtmlBlockTag.inputGroup(
         name: String,
         type: InputType = InputType.text,

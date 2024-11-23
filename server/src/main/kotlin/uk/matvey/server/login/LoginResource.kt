@@ -9,6 +9,7 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.util.date.GMTDate
+import uk.matvey.kit.net.NetKit.queryParamOrNull
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
 import uk.matvey.pauk.ktor.Resource
@@ -26,12 +27,7 @@ object LoginResource : Resource {
         route("/login") {
             getLoad("/login") {
                 call.respondHtml {
-                    val targetUrl = call.request.header(Referrer)
-                        ?.let(::URI)
-                        ?.query
-                        ?.split('&')
-                        ?.find { it.startsWith("$TARGET_URL=") }
-                        ?.substringAfter('=')
+                    val targetUrl = call.request.header(Referrer)?.let(::URI)?.queryParamOrNull(TARGET_URL)
                     login(targetUrl)
                 }
             }
