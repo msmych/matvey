@@ -22,8 +22,8 @@ import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
 import uk.matvey.server.Conf
-import uk.matvey.server.html.MatveyHtml.col
-import uk.matvey.server.html.MatveyHtml.row
+import uk.matvey.server.html.CommonHtml.horizontal
+import uk.matvey.server.html.CommonHtml.vertical
 import uk.matvey.server.login.AccountPrincipal
 
 object IndexHtml {
@@ -69,7 +69,7 @@ object IndexHtml {
     }
 
     private fun HTML.body(principal: AccountPrincipal?, loadPage: String? = null) = body {
-        col(16) {
+        vertical(16) {
             div {
                 style = """
                         |height: 64px;
@@ -86,12 +86,13 @@ object IndexHtml {
                     src = "https://live.staticflickr.com/961/41778488722_4612755202_k.jpg"
                 }
             }
-            col(32) {
+            vertical(32) {
                 style = """
                         margin: 0 auto 0;
                         width: 80%;
+                        min-width: 320px;
                         """.trimIndent()
-                row(8) {
+                horizontal(8) {
                     style = """
                             justify-content: space-between;
                             """.trimIndent()
@@ -124,7 +125,7 @@ object IndexHtml {
         }
     }
 
-    fun DIV.home() = col(gap = 8, classes = "card") {
+    fun DIV.home() = vertical(gap = 8, classes = "card") {
         div {
             +"Hi, my name is Matvey"
         }

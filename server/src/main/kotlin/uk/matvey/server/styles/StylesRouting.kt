@@ -12,6 +12,7 @@ import kotlinx.css.FlexDirection
 import kotlinx.css.FontWeight
 import kotlinx.css.Margin
 import kotlinx.css.Padding
+import kotlinx.css.alignItems
 import kotlinx.css.background
 import kotlinx.css.backgroundColor
 import kotlinx.css.body
@@ -25,12 +26,14 @@ import kotlinx.css.cursor
 import kotlinx.css.display
 import kotlinx.css.em
 import kotlinx.css.flexDirection
+import kotlinx.css.flexWrap
 import kotlinx.css.fontFamily
 import kotlinx.css.fontSize
 import kotlinx.css.fontWeight
 import kotlinx.css.gap
 import kotlinx.css.input
 import kotlinx.css.margin
+import kotlinx.css.marginLeft
 import kotlinx.css.maxWidth
 import kotlinx.css.padding
 import kotlinx.css.px
@@ -48,13 +51,19 @@ private fun CssBuilder.stylesCss() {
         margin = Margin(0.px)
         fontFamily = """"Mona Sans", sans-serif"""
     }
-    rule(".col") {
+    rule(".vertical") {
         display = Display.flex
         flexDirection = FlexDirection.column
     }
-    rule(".row") {
+    rule(".horizontal") {
         display = Display.flex
         flexDirection = FlexDirection.row
+    }
+    rule(".wrap") {
+        flexWrap = kotlinx.css.FlexWrap.wrap
+    }
+    rule(".center") {
+        alignItems = kotlinx.css.Align.center
     }
     buttonCss()
     inputCss()
@@ -105,6 +114,7 @@ private fun CssBuilder.inputCss() {
         width = 256.px
     }
     rule(".input-group label") {
+        marginLeft = 4.px
         fontSize = 0.8.em
         color = Color.gray
     }

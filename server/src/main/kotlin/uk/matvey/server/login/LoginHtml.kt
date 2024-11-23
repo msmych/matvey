@@ -8,9 +8,9 @@ import kotlinx.html.button
 import kotlinx.html.form
 import kotlinx.html.input
 import uk.matvey.pauk.ktor.KtorHtmx.hxPost
-import uk.matvey.server.html.MatveyHtml.col
-import uk.matvey.server.html.MatveyHtml.inputGroup
-import uk.matvey.server.html.MatveyHtml.t1
+import uk.matvey.server.html.CommonHtml.inputGroup
+import uk.matvey.server.html.CommonHtml.t1
+import uk.matvey.server.html.CommonHtml.vertical
 import uk.matvey.server.login.LoginResource.TARGET_URL
 
 object LoginHtml {
@@ -18,10 +18,10 @@ object LoginHtml {
     fun HTML.login(targetUrl: String?) = body {
         form(classes = "card") {
             hxPost(path = "/login", swap = "none")
-            col(16) {
+            vertical(16) {
                 t1("Login")
-                col(24) {
-                    col(8) {
+                vertical(24) {
+                    vertical(8) {
                         inputGroup(name = "username", required = true)
                         inputGroup(name = "password", type = InputType.password, required = true)
                         targetUrl?.let {

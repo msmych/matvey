@@ -2,48 +2,46 @@ package uk.matvey.server.settings
 
 import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.InputType
 import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.form
+import kotlinx.html.passwordInput
 import kotlinx.html.style
 import kotlinx.html.textInput
 import uk.matvey.pauk.ktor.KtorHtmx.hxDelete
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPatch
-import uk.matvey.server.html.MatveyHtml.col
-import uk.matvey.server.html.MatveyHtml.inputGroup
-import uk.matvey.server.html.MatveyHtml.row
-import uk.matvey.server.html.MatveyHtml.t1
-import uk.matvey.server.html.MatveyHtml.t2
-import uk.matvey.server.html.MatveyHtml.t3
+import uk.matvey.server.html.CommonHtml.horizontal
+import uk.matvey.server.html.CommonHtml.t1
+import uk.matvey.server.html.CommonHtml.t3
+import uk.matvey.server.html.CommonHtml.vertical
 import uk.matvey.server.login.AccountPrincipal
 
 object SettingsHtml {
 
-    fun HtmlBlockTag.settings(principal: AccountPrincipal) = col(16) {
+    fun HtmlBlockTag.settings(principal: AccountPrincipal) = vertical(16) {
         t1("Settings")
         username(principal.username)
         password()
         button {
+            style = "color: red;"
             hxDelete("/login")
+            attributes["hx-confirm"] = "Are you sure want to logout?"
             +"Logout"
         }
     }
 
-    fun HtmlBlockTag.username(username: String) = row(8) {
-        style = "align-items: center;"
+    fun HtmlBlockTag.username(username: String) = horizontal(gap = 8, classes = "center") {
         t3("Username:")
         t3(username)
         button {
-            hxGet(path = "/settings/username-edit", target = "closest .row")
+            hxGet(path = "/settings/username-edit", target = "closest div.horizontal")
             +"📝"
         }
     }
 
-    fun HtmlBlockTag.usernameEdit() = form(classes = "row gap-8") {
-        style = "align-items: center;"
-        hxPatch(path = "/settings/username", target = "closest div.row")
+    fun HtmlBlockTag.usernameEdit() = form(classes = "horizontal gap-8 center") {
+        hxPatch(path = "/settings/username", target = "closest div.horizontal")
         t3("Username:")
         textInput {
             name = "username"
@@ -56,35 +54,44 @@ object SettingsHtml {
                 +"✅"
             }
             button {
-                hxGet(path = "/settings/username", target = "closest div.row")
+                hxGet(path = "/settings/username", target = "closest div.horizontal")
                 +"❌"
             }
         }
     }
 
-    fun HtmlBlockTag.password() = row(8) {
-        style = "align-items: center;"
+    fun HtmlBlockTag.password() = horizontal(gap = 8, classes = "center") {
         t3("Password:")
         t3("****")
         button {
-            hxGet(path = "/settings/password-edit", target = "closest .row", swap = "outerHTML")
+            hxGet(path = "/settings/password-edit", target = "closest .horizontal", swap = "outerHTML")
             +"📝"
         }
     }
 
-    fun HtmlBlockTag.passwordEdit() = form(classes = "col gap-8") {
+    fun HtmlBlockTag.passwordEdit() = form(classes = "horizontal gap-8 center") {
         hxPatch(path = "/settings/password", swap = "outerHTML")
-        t2("Update password")
-        inputGroup(name = "currentPassword", type = InputType.password, required = true, label = "Current password")
-        inputGroup(name = "newPassword", type = InputType.password, required = true, label = "New password")
-        div {
-            button {
-                type = ButtonType.submit
-                +"✅"
+        t3("Password:")
+        horizontal(gap = 8, classes = "wrap") {
+            passwordInput {
+                name = "currentPassword"
+                required = true
+                placeholder = "Current password"
             }
-            button {
-                hxGet(path = "/settings/password", target = "closest form")
-                +"❌"
+            passwordInput {
+                name = "newPassword"
+                required = true
+                placeholder = "New password"
+            }
+            horizontal {
+                button {
+                    type = ButtonType.submit
+                    +"✅"
+                }
+                button {
+                    hxGet(path = "/settings/password", target = "closest form", swap = "outerHTML")
+                    +"❌"
+                }
             }
         }
     }
