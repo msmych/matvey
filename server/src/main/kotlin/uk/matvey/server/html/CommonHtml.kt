@@ -9,15 +9,19 @@ import kotlinx.html.input
 import kotlinx.html.label
 import uk.matvey.kit.string.StringKit.capital
 
-object MatveyHtml {
+object CommonHtml {
 
-    fun HtmlBlockTag.col(gap: Int? = null, classes: String? = null, block: DIV.() -> Unit) {
-        val allClasses = listOfNotNull("col", gap?.let { "gap-$it" }, classes).joinToString(" ")
+    fun HtmlBlockTag.vertical(gap: Int? = null, classes: String? = null, block: DIV.() -> Unit) {
+        val allClasses = listOfNotNull("vertical", gap?.let { "gap-$it" }, classes).joinToString(" ")
         div(allClasses, block)
     }
 
-    fun HtmlBlockTag.row(gap: Int? = null, classes: String? = null, block: DIV.() -> Unit) {
-        val allClasses = listOfNotNull("row", gap?.let { "gap-$it" }, classes).joinToString(" ")
+    fun HtmlBlockTag.horizontal(
+        gap: Int? = null,
+        classes: String? = null,
+        block: DIV.() -> Unit
+    ) {
+        val allClasses = listOfNotNull("horizontal", gap?.let { "gap-$it" }, classes).joinToString(" ")
         div(allClasses, block)
     }
 
@@ -40,7 +44,7 @@ object MatveyHtml {
         label: String? = capital(name),
         placeholder: String? = label,
         inputBlock: INPUT.() -> Unit = {},
-    ) = col(gap = 2, classes = "input-group") {
+    ) = vertical(gap = 2, classes = "input-group") {
         label?.let {
             label {
                 htmlFor = name
