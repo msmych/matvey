@@ -23,3 +23,5 @@ jobs:
 
       - name: Build
         run: ./gradlew check
+        env:
+          GH_PACKAGES_RO_TOKEN: ${{ secrets.GH_PACKAGES_RO_TOKEN }}
