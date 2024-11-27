@@ -1,4 +1,4 @@
-package uk.matvey.server.login
+package uk.matvey.server.auth
 
 import io.ktor.http.HttpHeaders.Referrer
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -13,27 +13,31 @@ import uk.matvey.kit.net.NetKit.queryParamOrNull
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
 import uk.matvey.pauk.ktor.Resource
+import uk.matvey.server.account.AccountService
+import uk.matvey.server.auth.AuthHtml.auth
+import uk.matvey.server.auth.AuthJwt.TOKEN
+import uk.matvey.server.auth.AuthJwt.setTokenCookie
 import uk.matvey.server.index.getLoad
-import uk.matvey.server.login.AuthJwt.TOKEN
-import uk.matvey.server.login.AuthJwt.setTokenCookie
-import uk.matvey.server.login.LoginHtml.login
 import java.net.URI
 
-object LoginResource : Resource {
-
-    const val TARGET_URL = "targetUrl"
+class AuthResource(
+    private val accountService: AccountService,
+) : Resource {
 
     override fun Route.routing() {
-        route("/login") {
-            getLoad("/login") {
+        route("/auth") {
+            getLoad("/auth") {
                 call.respondHtml {
                     val targetUrl = call.request.header(Referrer)?.let(::URI)?.queryParamOrNull(TARGET_URL)
-                    login(targetUrl)
+                    auth(targetUrl)
                 }
             }
             post {
                 val params = call.receiveParamsMap()
-                call.setTokenCookie(params.getValue("username"))
+                val username = params.getValue(USERNAME)
+                val password = params.getValue(PASSWORD)
+                val account = accountService.ensureAccount(username, password)
+                call.setTokenCookie(account.id, username)
                 call.setHxRedirect(params[TARGET_URL] ?: "/")
                 call.respond(OK, null)
             }
@@ -43,5 +47,12 @@ object LoginResource : Resource {
                 call.respond(OK, null)
             }
         }
+    }
+
+    companion object {
+        const val TARGET_URL = "targetUrl"
+
+        const val USERNAME = "username"
+        const val PASSWORD = "password"
     }
 }

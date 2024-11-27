@@ -1,5 +1,6 @@
 package uk.matvey.server.ktor
 
+import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import io.ktor.server.application.install
 import io.ktor.server.application.serverConfig
@@ -12,22 +13,27 @@ import io.ktor.server.netty.NettyApplicationEngine
 import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.uri
+import io.ktor.server.response.respondText
 import uk.matvey.pauk.exception.AuthException
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.configureSsl
 import uk.matvey.server.Conf
-import uk.matvey.server.login.AuthJwt
-import uk.matvey.server.login.LoginResource.TARGET_URL
+import uk.matvey.server.Services
+import uk.matvey.server.auth.AuthJwt
+import uk.matvey.server.auth.AuthResource.Companion.TARGET_URL
 
-fun ktorServer() = embeddedServer(
+fun ktorServer(services: Services) = embeddedServer(
     factory = Netty,
     environment = environment(),
     configure = { config() }
 ) {
     install(StatusPages) {
         exception<AuthException> { call, _ ->
-            call.setHxRedirect("/login?$TARGET_URL=${call.request.uri}")
+            call.setHxRedirect("/auth?$TARGET_URL=${call.request.uri}")
             call.respond(Unauthorized, null)
+        }
+        exception<IllegalArgumentException> { call, e ->
+            call.respondText(e.message ?: "BadRequest", status = BadRequest)
         }
     }
     authentication {
@@ -35,7 +41,7 @@ fun ktorServer() = embeddedServer(
         register(AuthJwt.Optional)
     }
     install(CallLogging)
-    ktorModule()
+    ktorModule(services)
 }
 
 private fun environment() = applicationEnvironment {

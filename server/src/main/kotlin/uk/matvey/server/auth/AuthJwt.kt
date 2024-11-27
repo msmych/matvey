@@ -1,4 +1,4 @@
-package uk.matvey.server.login
+package uk.matvey.server.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -14,9 +14,11 @@ import io.ktor.util.date.GMTDate
 import io.ktor.util.date.plus
 import io.netty.handler.codec.http.cookie.CookieHeaderNames.SAMESITE
 import io.netty.handler.codec.http.cookie.CookieHeaderNames.SameSite
+import uk.matvey.kit.string.StringKit.toUuid
 import uk.matvey.pauk.exception.AuthException
 import uk.matvey.server.Conf
 import uk.matvey.server.Conf.APP_NAME
+import java.util.UUID
 import kotlin.time.Duration.Companion.hours
 
 object AuthJwt {
@@ -37,7 +39,9 @@ object AuthJwt {
             processAuth(context, required = true)
         }
 
-        fun ApplicationCall.accountPrincipal() = requireNotNull(principal<AccountPrincipal>())
+        fun ApplicationCall.accountPrincipal() = requireNotNull(principal<AccountPrincipal>()) {
+            "Account principal is missing"
+        }
     }
 
     object Optional : AuthenticationProvider(Config) {
@@ -72,20 +76,27 @@ object AuthJwt {
                 throw AuthException(cause = e)
             }
         }?.let {
-            context.principal(AccountPrincipal(it.subject))
+            try {
+                context.principal(AccountPrincipal(it.subject.toUuid(), it.getClaim("username").asString()))
+            } catch (e: Exception) {
+                context.call.response.cookies.append(TOKEN, "", expires = GMTDate.START)
+                throw AuthException(cause = e)
+            }
         } ?: if (required) {
             throw AuthException()
         } else {
         }
     }
 
-    fun ApplicationCall.setTokenCookie(username: String) {
+    fun ApplicationCall.setTokenCookie(id: UUID, username: String) {
         response.cookies.append(
             name = TOKEN,
             value = JWT.create()
                 .withIssuer(APP_NAME)
-                .withSubject(username)
+                .withSubject(id.toString())
+                .withClaim("username", username)
                 .sign(algorithm),
+            path = "/",
             expires = GMTDate() + 24.hours,
             secure = Conf.profile == Conf.Profile.PROD,
             httpOnly = true,

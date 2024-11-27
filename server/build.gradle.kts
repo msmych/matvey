@@ -31,6 +31,7 @@ repositories {
 
 val kitVersion: String by project
 val paukVersion: String by project
+val slonVersion: String by project
 val ktorVersion: String by project
 val kotlinCssVersion: String by project
 val junitVersion: String by project
@@ -39,7 +40,7 @@ val assertjVersion: String by project
 dependencies {
     implementation("uk.matvey:kit:$kitVersion")
     implementation("uk.matvey:pauk:$paukVersion")
-    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    implementation("uk.matvey:slon:$slonVersion")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")

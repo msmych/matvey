@@ -2,6 +2,7 @@ package uk.matvey.server
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import com.zaxxer.hikari.HikariConfig
 import io.ktor.server.config.tryGetString
 import mu.KotlinLogging
 
@@ -22,6 +23,8 @@ object Conf {
 
     val server = ServerConfig(config.getConfig("server"))
 
+    val db = DbConfig(config.getConfig("db"))
+
     enum class Profile {
         LOCAL, TEST, PROD
     }
@@ -32,10 +35,29 @@ object Conf {
 
         val jksPass = tryGetString("jksPass")
 
-        fun jksPass() = requireNotNull(jksPass)
+        fun jksPass() = requireNotNull(jksPass) {
+            "JKS password is missing"
+        }
 
         val jwtSecret = getString("jwtSecret")
 
         val assetsUrl = getString("assetsUrl")
+    }
+
+    class DbConfig(config: Config) : Config by config {
+
+        val jdbcUrl = getString("jdbcUrl")
+
+        val username = getString("username")
+
+        val password = getString("password")
+
+        fun hikariConfig(): HikariConfig {
+            val config = HikariConfig()
+            config.jdbcUrl = jdbcUrl
+            config.username = username
+            config.password = password
+            return config
+        }
     }
 }
