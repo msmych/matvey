@@ -8,8 +8,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import uk.matvey.pauk.ktor.KtorHtmx.isHxRequest
 import uk.matvey.server.index.IndexHtml.index
-import uk.matvey.server.login.AccountPrincipal
-import uk.matvey.server.login.AuthJwt.Optional.authJwtOptional
+import uk.matvey.server.auth.AccountPrincipal
+import uk.matvey.server.auth.AuthJwt.Optional.authJwtOptional
 
 fun Route.indexRouting() {
     route("/") {

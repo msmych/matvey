@@ -16,15 +16,16 @@ import kotlinx.html.meta
 import kotlinx.html.script
 import kotlinx.html.style
 import kotlinx.html.title
-import uk.matvey.pauk.ktor.HtmlKit.stylesheet
+import uk.matvey.pauk.html.HtmlKit.stylesheet
 import uk.matvey.pauk.ktor.KtorHtmx.htmxScript
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
+import uk.matvey.pauk.ktor.KtorHtmx.hxSwapOob
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
 import uk.matvey.server.Conf
+import uk.matvey.server.auth.AccountPrincipal
 import uk.matvey.server.html.CommonHtml.horizontal
 import uk.matvey.server.html.CommonHtml.vertical
-import uk.matvey.server.login.AccountPrincipal
 
 object IndexHtml {
 
@@ -105,7 +106,7 @@ object IndexHtml {
                             settingsMenuItem(principal.username)
                         } else {
                             button {
-                                hxGet(path = "/login", target = "#content")
+                                hxGet(path = "/auth", target = "#content")
                                 hxPushUrl()
                                 +"👤 Login"
                             }
@@ -167,7 +168,7 @@ object IndexHtml {
             +": Kotlin HTTP utilities"
         }
         div {
-            +"More stuff is on the way, in the meantime, you can check out my "
+            +"More stuff is on the way. in the meantime, you can check out my "
             a(href = "https://x.com/matvey_uk") {
                 +"X account"
             }
@@ -180,7 +181,7 @@ object IndexHtml {
             hxGet(path = "/settings", target = "#content")
             hxPushUrl()
             if (oob) {
-                attributes["hx-swap-oob"] = "true"
+                hxSwapOob()
             }
             +"👤 $username"
         }

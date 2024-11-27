@@ -8,14 +8,15 @@ import kotlinx.html.form
 import kotlinx.html.passwordInput
 import kotlinx.html.style
 import kotlinx.html.textInput
+import uk.matvey.pauk.ktor.KtorHtmx.hxConfirm
 import uk.matvey.pauk.ktor.KtorHtmx.hxDelete
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPatch
+import uk.matvey.server.auth.AccountPrincipal
 import uk.matvey.server.html.CommonHtml.horizontal
 import uk.matvey.server.html.CommonHtml.t1
 import uk.matvey.server.html.CommonHtml.t3
 import uk.matvey.server.html.CommonHtml.vertical
-import uk.matvey.server.login.AccountPrincipal
 
 object SettingsHtml {
 
@@ -25,8 +26,8 @@ object SettingsHtml {
         password()
         button {
             style = "color: red;"
-            hxDelete("/login")
-            attributes["hx-confirm"] = "Are you sure want to logout?"
+            hxDelete("/auth")
+            hxConfirm("Are you sure want to logout?")
             +"Logout"
         }
     }

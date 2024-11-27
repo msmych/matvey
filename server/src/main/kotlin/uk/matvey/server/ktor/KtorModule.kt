@@ -5,12 +5,17 @@ import io.ktor.server.http.content.staticResources
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import uk.matvey.server.Services
+import uk.matvey.server.auth.AuthResource
 import uk.matvey.server.index.indexRouting
-import uk.matvey.server.login.LoginResource
-import uk.matvey.server.settings.settingsRouting
+import uk.matvey.server.settings.SettingsResource
 import uk.matvey.server.styles.stylesRouting
 
-fun Application.ktorModule() {
+fun Application.ktorModule(services: Services) {
+    val resources = listOf(
+        AuthResource(services.accountService),
+        SettingsResource(services.accountService, services.repo),
+    )
     routing {
         get("/health") {
             call.respondText("OK")
@@ -18,7 +23,6 @@ fun Application.ktorModule() {
         staticResources("/assets", "/assets")
         indexRouting()
         stylesRouting()
-        with(LoginResource) { routing() }
-        settingsRouting()
+        resources.forEach { with(it) { routing() } }
     }
 }
