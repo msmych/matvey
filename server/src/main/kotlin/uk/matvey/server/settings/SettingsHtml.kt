@@ -8,6 +8,7 @@ import kotlinx.html.form
 import kotlinx.html.passwordInput
 import kotlinx.html.style
 import kotlinx.html.textInput
+import uk.matvey.pauk.htmx.Htmx.Swap.outerHTML
 import uk.matvey.pauk.ktor.KtorHtmx.hxConfirm
 import uk.matvey.pauk.ktor.KtorHtmx.hxDelete
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
@@ -65,13 +66,13 @@ object SettingsHtml {
         t3("Password:")
         t3("****")
         button {
-            hxGet(path = "/settings/password-edit", target = "closest .horizontal", swap = "outerHTML")
+            hxGet(path = "/settings/password-edit", target = "closest .horizontal", swap = outerHTML)
             +"📝"
         }
     }
 
     fun HtmlBlockTag.passwordEdit() = form(classes = "horizontal gap-8 center") {
-        hxPatch(path = "/settings/password", swap = "outerHTML")
+        hxPatch(path = "/settings/password", swap = outerHTML)
         t3("Password:")
         horizontal(gap = 8, classes = "wrap") {
             passwordInput {
@@ -90,7 +91,7 @@ object SettingsHtml {
                     +"✅"
                 }
                 button {
-                    hxGet(path = "/settings/password", target = "closest form", swap = "outerHTML")
+                    hxGet(path = "/settings/password", target = "closest form", swap = outerHTML)
                     +"❌"
                 }
             }
