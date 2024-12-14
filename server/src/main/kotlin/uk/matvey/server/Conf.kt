@@ -2,7 +2,6 @@ package uk.matvey.server
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
-import com.zaxxer.hikari.HikariConfig
 import io.ktor.server.config.tryGetString
 import mu.KotlinLogging
 
@@ -51,13 +50,5 @@ object Conf {
         val username = getString("username")
 
         val password = getString("password")
-
-        fun hikariConfig(): HikariConfig {
-            val config = HikariConfig()
-            config.jdbcUrl = jdbcUrl
-            config.username = username
-            config.password = password
-            return config
-        }
     }
 }

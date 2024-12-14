@@ -1,5 +1,7 @@
 package uk.matvey.server.settings
 
+import com.github.jasync.sql.db.pool.ConnectionPool
+import com.github.jasync.sql.db.postgresql.PostgreSQLConnection
 import io.ktor.server.html.respondHtml
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
@@ -20,11 +22,10 @@ import uk.matvey.server.settings.SettingsHtml.passwordEdit
 import uk.matvey.server.settings.SettingsHtml.settings
 import uk.matvey.server.settings.SettingsHtml.username
 import uk.matvey.server.settings.SettingsHtml.usernameEdit
-import uk.matvey.slon.repo.Repo
 
 class SettingsResource(
     private val accountService: AccountService,
-    private val repo: Repo
+    private val pool: ConnectionPool<PostgreSQLConnection>
 ) : Resource {
 
     override fun Route.routing() {
@@ -51,7 +52,7 @@ class SettingsResource(
                         val principal = call.accountPrincipal()
                         val params = call.receiveParamsMap()
                         val username = params.getValue("username")
-                        repo.updateUsername(principal.id, username)
+                        pool.updateUsername(principal.id, username)
                         call.setTokenCookie(principal.id, username)
                         call.respondHtml {
                             body {
