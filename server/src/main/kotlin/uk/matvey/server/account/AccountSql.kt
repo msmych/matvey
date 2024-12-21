@@ -1,15 +1,9 @@
 package uk.matvey.server.account
 
+import com.github.jasync.sql.db.Connection
+import com.github.jasync.sql.db.RowData
+import kotlinx.coroutines.future.await
 import uk.matvey.kit.time.TimeKit.instant
-import uk.matvey.slon.RecordReader
-import uk.matvey.slon.access.AccessKit.queryOne
-import uk.matvey.slon.access.AccessKit.queryOneOrNull
-import uk.matvey.slon.access.AccessKit.update
-import uk.matvey.slon.query.InsertOneQueryBuilder.Companion.insertOneInto
-import uk.matvey.slon.query.ReturningQuery.Companion.returning
-import uk.matvey.slon.repo.Repo
-import uk.matvey.slon.value.PgText.Companion.toPgText
-import uk.matvey.slon.value.PgUuid.Companion.toPgUuid
 import java.util.UUID
 
 object AccountSql {
@@ -24,72 +18,79 @@ object AccountSql {
     const val CREATED_AT = "created_at"
     const val UPDATED_AT = "updated_at"
 
-    fun Repo.getAccount(id: UUID): Account {
-        return access { a ->
-            a.queryOne(
-                """
+    suspend fun Connection.getAccount(id: UUID): Account {
+        return sendQuery(
+            """
                     select * from $ACCOUNTS
-                    where $ID = ?
+                    where $ID = '$id'
                 """.trimIndent(),
-                listOf(id.toPgUuid()),
-                ::readAccount
-            )
-        }
+        )
+            .await()
+            .rows
+            .single()
+            .toAccount()
     }
 
-    fun Repo.findAccount(username: String): Account? {
-        return access { a ->
-            a.queryOneOrNull(
-                """
-                    select * from $ACCOUNTS
-                    where $USERNAME = ?
-                """.trimIndent(),
-                listOf(username.toPgText()),
-                ::readAccount
-            )
-        }
+    suspend fun Connection.findAccount(username: String): Account? {
+        val sendQuery = sendQuery(
+            """
+                select * from $ACCOUNTS
+                where $USERNAME = '$username'
+            """.trimIndent(),
+        )
+        return sendQuery
+            .await()
+            .rows
+            .singleOrNull()
+            ?.toAccount()
     }
 
-    fun Repo.addAccount(username: String, passHash: String): Account {
-        return access { a ->
-            a.query(
-                insertOneInto(ACCOUNTS) {
-                    set(USERNAME, username)
-                    set(STATE, Account.State.PENDING)
-                    set(PASS_HASH, passHash)
-                    set(CREATED_AT, instant())
-                }.returning(::readAccount)
-            )
-        }.single()
+    suspend fun Connection.addAccount(username: String, passHash: String): Account {
+        return sendPreparedStatement(
+            """
+                insert into $ACCOUNTS ($USERNAME, $STATE, $PASS_HASH, $CREATED_AT)
+                values (?, ?, ?, ?)
+                returning *
+            """.trimIndent(),
+            listOf(username, Account.State.PENDING.name, passHash, instant().toString()),
+        )
+            .await()
+            .rows
+            .single()
+            .toAccount()
     }
 
-    fun Repo.updateUsername(id: UUID, username: String) {
-        access { a ->
-            a.update(ACCOUNTS) {
-                set(USERNAME, username)
-                set(UPDATED_AT, instant())
-                where("$ID = ?", id.toPgUuid())
-            }
-        }
+    suspend fun Connection.updateUsername(id: UUID, username: String) {
+        sendPreparedStatement(
+            """
+                update $ACCOUNTS
+                set $USERNAME = ?, $UPDATED_AT = ?
+                where $ID = ?
+            """.trimIndent(),
+            listOf(username, instant().toString(), id),
+        )
+            .await()
     }
 
-    fun Repo.updatePassHash(id: UUID, passHash: String) {
-        access { a ->
-            a.update(ACCOUNTS) {
-                set(PASS_HASH, passHash)
-                set(UPDATED_AT, instant())
-                where("$ID = ?", id.toPgUuid())
-            }
-        }
+    suspend fun Connection.updatePassHash(id: UUID, passHash: String) {
+        sendPreparedStatement(
+            """
+                update $ACCOUNTS
+                set $PASS_HASH = ?, $UPDATED_AT = ?
+                where $ID = ?
+            """.trimIndent(),
+            listOf(passHash, instant().toString(), id),
+        )
+            .await()
     }
 
-    fun readAccount(reader: RecordReader): Account {
+    fun RowData.toAccount(): Account {
         return Account(
-            id = reader.uuid(ID),
-            username = reader.string(USERNAME),
-            state = reader.enum(STATE),
-            tags = reader.stringList(TAGS).map(Account.Tag::valueOf),
-            passHash = reader.stringOrNull(PASS_HASH),
+            id = getAs(ID),
+            username = getAs(USERNAME),
+            state = Account.State.valueOf(requireNotNull(getString(STATE))),
+            tags = getAs<List<String>>(TAGS).map(Account.Tag::valueOf),
+            passHash = getAs(PASS_HASH),
         )
     }
 }

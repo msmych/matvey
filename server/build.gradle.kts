@@ -40,7 +40,10 @@ val assertjVersion: String by project
 dependencies {
     implementation("uk.matvey:kit:$kitVersion")
     implementation("uk.matvey:pauk:$paukVersion")
-    implementation("uk.matvey:slon:$slonVersion")
+    implementation("com.github.jasync-sql:jasync-postgresql:2.2.0")
+    implementation("org.flywaydb:flyway-core:11.0.1")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:11.0.1")
+    runtimeOnly("org.postgresql:postgresql:42.7.4")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")

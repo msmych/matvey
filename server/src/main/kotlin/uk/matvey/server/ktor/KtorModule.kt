@@ -14,7 +14,7 @@ import uk.matvey.server.styles.stylesRouting
 fun Application.ktorModule(services: Services) {
     val resources = listOf(
         AuthResource(services.accountService),
-        SettingsResource(services.accountService, services.repo),
+        SettingsResource(services.accountService, services.pool),
     )
     routing {
         get("/health") {
