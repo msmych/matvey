@@ -8,11 +8,11 @@ ENV GH_PACKAGES_RO_TOKEN=$GH_PACKAGES_RO_TOKEN
 COPY gradlew settings.gradle.kts build.gradle.kts gradle.properties /app/
 
 COPY gradle /app/gradle
-COPY server /app/server
+COPY app /app/server
 
 RUN chmod +x gradlew
 
-RUN ./gradlew server:shadowJar --no-daemon
+RUN ./gradlew app:shadowJar --no-daemon
 
 FROM eclipse-temurin:21-jre
 
