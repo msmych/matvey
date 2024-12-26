@@ -1,4 +1,4 @@
-package uk.matvey.server.settings
+package uk.matvey.app.settings
 
 import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
@@ -13,11 +13,11 @@ import uk.matvey.pauk.ktor.KtorHtmx.hxConfirm
 import uk.matvey.pauk.ktor.KtorHtmx.hxDelete
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPatch
-import uk.matvey.server.auth.AccountPrincipal
-import uk.matvey.server.html.CommonHtml.horizontal
-import uk.matvey.server.html.CommonHtml.t1
-import uk.matvey.server.html.CommonHtml.t3
-import uk.matvey.server.html.CommonHtml.vertical
+import uk.matvey.app.auth.AccountPrincipal
+import uk.matvey.app.html.CommonHtml.horizontal
+import uk.matvey.app.html.CommonHtml.t1
+import uk.matvey.app.html.CommonHtml.t3
+import uk.matvey.app.html.CommonHtml.vertical
 
 object SettingsHtml {
 

@@ -1,4 +1,4 @@
-package uk.matvey.server.ktor
+package uk.matvey.app.ktor
 
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
@@ -14,13 +14,13 @@ import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.uri
 import io.ktor.server.response.respondText
+import uk.matvey.app.Conf
+import uk.matvey.app.Services
+import uk.matvey.app.auth.AuthJwt
+import uk.matvey.app.auth.AuthResource.Companion.TARGET_URL
 import uk.matvey.pauk.exception.AuthException
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.configureSsl
-import uk.matvey.server.Conf
-import uk.matvey.server.Services
-import uk.matvey.server.auth.AuthJwt
-import uk.matvey.server.auth.AuthResource.Companion.TARGET_URL
 
 fun ktorServer(services: Services) = embeddedServer(
     factory = Netty,

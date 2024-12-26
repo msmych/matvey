@@ -1,4 +1,4 @@
-package uk.matvey.server.crypto
+package uk.matvey.app.crypto
 
 import java.security.SecureRandom
 import java.util.Base64

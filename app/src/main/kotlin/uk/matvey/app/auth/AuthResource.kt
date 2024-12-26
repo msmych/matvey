@@ -1,4 +1,4 @@
-package uk.matvey.server.auth
+package uk.matvey.app.auth
 
 import io.ktor.http.HttpHeaders.Referrer
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -13,11 +13,11 @@ import uk.matvey.kit.net.NetKit.queryParamOrNull
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
 import uk.matvey.pauk.ktor.Resource
-import uk.matvey.server.account.AccountService
-import uk.matvey.server.auth.AuthHtml.auth
-import uk.matvey.server.auth.AuthJwt.TOKEN
-import uk.matvey.server.auth.AuthJwt.setTokenCookie
-import uk.matvey.server.index.getLoad
+import uk.matvey.app.account.AccountService
+import uk.matvey.app.auth.AuthHtml.auth
+import uk.matvey.app.auth.AuthJwt.TOKEN
+import uk.matvey.app.auth.AuthJwt.setTokenCookie
+import uk.matvey.app.index.getLoad
 import java.net.URI
 
 class AuthResource(

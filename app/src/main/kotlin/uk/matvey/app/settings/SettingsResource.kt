@@ -1,4 +1,4 @@
-package uk.matvey.server.settings
+package uk.matvey.app.settings
 
 import com.github.jasync.sql.db.pool.ConnectionPool
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection
@@ -10,18 +10,18 @@ import io.ktor.server.routing.route
 import kotlinx.html.body
 import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
 import uk.matvey.pauk.ktor.Resource
-import uk.matvey.server.account.AccountService
-import uk.matvey.server.account.AccountSql.updateUsername
-import uk.matvey.server.auth.AuthJwt.Required.accountPrincipal
-import uk.matvey.server.auth.AuthJwt.Required.authJwtRequired
-import uk.matvey.server.auth.AuthJwt.setTokenCookie
-import uk.matvey.server.index.IndexHtml.settingsMenuItem
-import uk.matvey.server.index.getLoad
-import uk.matvey.server.settings.SettingsHtml.password
-import uk.matvey.server.settings.SettingsHtml.passwordEdit
-import uk.matvey.server.settings.SettingsHtml.settings
-import uk.matvey.server.settings.SettingsHtml.username
-import uk.matvey.server.settings.SettingsHtml.usernameEdit
+import uk.matvey.app.account.AccountService
+import uk.matvey.app.account.AccountSql.updateUsername
+import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
+import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
+import uk.matvey.app.auth.AuthJwt.setTokenCookie
+import uk.matvey.app.index.IndexHtml.settingsMenuItem
+import uk.matvey.app.index.getLoad
+import uk.matvey.app.settings.SettingsHtml.password
+import uk.matvey.app.settings.SettingsHtml.passwordEdit
+import uk.matvey.app.settings.SettingsHtml.settings
+import uk.matvey.app.settings.SettingsHtml.username
+import uk.matvey.app.settings.SettingsHtml.usernameEdit
 
 class SettingsResource(
     private val accountService: AccountService,

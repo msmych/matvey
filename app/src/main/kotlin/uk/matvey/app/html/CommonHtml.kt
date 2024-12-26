@@ -1,4 +1,4 @@
-package uk.matvey.server.html
+package uk.matvey.app.html
 
 import kotlinx.html.DIV
 import kotlinx.html.HtmlBlockTag

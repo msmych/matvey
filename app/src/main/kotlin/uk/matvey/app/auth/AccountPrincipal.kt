@@ -1,4 +1,4 @@
-package uk.matvey.server.auth
+package uk.matvey.app.auth
 
 import java.util.UUID
 
