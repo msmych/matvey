@@ -10,7 +10,10 @@ import uk.matvey.server.account.AccountSql.updatePassHash
 import uk.matvey.server.crypto.CryptoService
 import java.util.UUID
 
-class AccountService(private val pool: ConnectionPool<PostgreSQLConnection>, private val cryptoService: CryptoService) {
+class AccountService(
+    private val pool: ConnectionPool<PostgreSQLConnection>,
+    private val cryptoService: CryptoService
+) {
 
     suspend fun ensureAccount(username: String, password: String): Account {
         return pool.findAccount(username)?.let {

@@ -32,11 +32,12 @@ object AccountSql {
     }
 
     suspend fun Connection.findAccount(username: String): Account? {
-        val sendQuery = sendQuery(
+        val sendQuery = sendPreparedStatement(
             """
                 select * from $ACCOUNTS
-                where $USERNAME = '$username'
+                where $USERNAME = ?
             """.trimIndent(),
+            listOf(username)
         )
         return sendQuery
             .await()

@@ -29,21 +29,25 @@ repositories {
     }
 }
 
-val kitVersion: String by project
-val paukVersion: String by project
-val slonVersion: String by project
-val ktorVersion: String by project
-val kotlinCssVersion: String by project
-val junitVersion: String by project
 val assertjVersion: String by project
+val flywayVersion: String by project
+val jasyncVersion: String by project
+val junitVersion: String by project
+val kitVersion: String by project
+val kotlinCssVersion: String by project
+val ktorVersion: String by project
+val paukVersion: String by project
+val postgresVersion: String by project
+val slonVersion: String by project
 
 dependencies {
+    implementation("com.github.jasync-sql:jasync-postgresql:$jasyncVersion")
+    implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("uk.matvey:kit:$kitVersion")
     implementation("uk.matvey:pauk:$paukVersion")
-    implementation("com.github.jasync-sql:jasync-postgresql:2.2.0")
-    implementation("org.flywaydb:flyway-core:11.0.1")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:11.0.1")
-    runtimeOnly("org.postgresql:postgresql:42.7.4")
+
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:$flywayVersion")
+    runtimeOnly("org.postgresql:postgresql:$postgresVersion")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")
