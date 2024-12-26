@@ -1,4 +1,4 @@
-package uk.matvey.server.index
+package uk.matvey.app.index
 
 import kotlinx.html.DIV
 import kotlinx.html.HTML
@@ -16,16 +16,16 @@ import kotlinx.html.meta
 import kotlinx.html.script
 import kotlinx.html.style
 import kotlinx.html.title
+import uk.matvey.app.Conf
+import uk.matvey.app.auth.AccountPrincipal
+import uk.matvey.app.html.CommonHtml.horizontal
+import uk.matvey.app.html.CommonHtml.vertical
 import uk.matvey.pauk.html.HtmlKit.stylesheet
 import uk.matvey.pauk.ktor.KtorHtmx.htmxScript
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
 import uk.matvey.pauk.ktor.KtorHtmx.hxSwapOob
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
-import uk.matvey.server.Conf
-import uk.matvey.server.auth.AccountPrincipal
-import uk.matvey.server.html.CommonHtml.horizontal
-import uk.matvey.server.html.CommonHtml.vertical
 
 object IndexHtml {
 

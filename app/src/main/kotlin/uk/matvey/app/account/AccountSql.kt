@@ -1,4 +1,4 @@
-package uk.matvey.server.account
+package uk.matvey.app.account
 
 import com.github.jasync.sql.db.Connection
 import com.github.jasync.sql.db.RowData

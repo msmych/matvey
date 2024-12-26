@@ -1,4 +1,4 @@
-package uk.matvey.server.account
+package uk.matvey.app.account
 
 import java.util.UUID
 

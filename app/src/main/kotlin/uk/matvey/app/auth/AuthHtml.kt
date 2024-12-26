@@ -1,4 +1,4 @@
-package uk.matvey.server.auth
+package uk.matvey.app.auth
 
 import kotlinx.html.ButtonType
 import kotlinx.html.HTML
@@ -8,10 +8,10 @@ import kotlinx.html.button
 import kotlinx.html.form
 import kotlinx.html.input
 import uk.matvey.pauk.ktor.KtorHtmx.hxPost
-import uk.matvey.server.auth.AuthResource.Companion.TARGET_URL
-import uk.matvey.server.html.CommonHtml.inputGroup
-import uk.matvey.server.html.CommonHtml.t1
-import uk.matvey.server.html.CommonHtml.vertical
+import uk.matvey.app.auth.AuthResource.Companion.TARGET_URL
+import uk.matvey.app.html.CommonHtml.inputGroup
+import uk.matvey.app.html.CommonHtml.t1
+import uk.matvey.app.html.CommonHtml.vertical
 
 object AuthHtml {
 

@@ -1,4 +1,4 @@
-package uk.matvey.server.styles
+package uk.matvey.app.styles
 
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get

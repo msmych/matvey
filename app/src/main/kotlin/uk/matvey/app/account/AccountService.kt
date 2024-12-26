@@ -1,13 +1,13 @@
-package uk.matvey.server.account
+package uk.matvey.app.account
 
 import com.github.jasync.sql.db.pool.ConnectionPool
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection
 import uk.matvey.pauk.exception.AuthException
-import uk.matvey.server.account.AccountSql.addAccount
-import uk.matvey.server.account.AccountSql.findAccount
-import uk.matvey.server.account.AccountSql.getAccount
-import uk.matvey.server.account.AccountSql.updatePassHash
-import uk.matvey.server.crypto.CryptoService
+import uk.matvey.app.account.AccountSql.addAccount
+import uk.matvey.app.account.AccountSql.findAccount
+import uk.matvey.app.account.AccountSql.getAccount
+import uk.matvey.app.account.AccountSql.updatePassHash
+import uk.matvey.app.crypto.CryptoService
 import java.util.UUID
 
 class AccountService(

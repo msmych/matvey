@@ -1,9 +1,9 @@
-package uk.matvey.server.db
+package uk.matvey.app.db
 
 import mu.KotlinLogging
 import org.flywaydb.core.Flyway
-import uk.matvey.server.Conf
-import uk.matvey.server.Conf.Profile
+import uk.matvey.app.Conf
+import uk.matvey.app.Conf.Profile
 
 private val log = KotlinLogging.logger {}
 

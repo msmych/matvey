@@ -58,5 +58,5 @@ dependencies {
 }
 
 application {
-    mainClass = "uk.matvey.server.AppKt"
+    mainClass = "uk.matvey.app.AppKt"
 }

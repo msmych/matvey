@@ -1,8 +1,8 @@
-package uk.matvey.server
+package uk.matvey.app
 
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder.createConnectionPool
-import uk.matvey.server.account.AccountService
-import uk.matvey.server.crypto.CryptoService
+import uk.matvey.app.account.AccountService
+import uk.matvey.app.crypto.CryptoService
 
 class Services {
 

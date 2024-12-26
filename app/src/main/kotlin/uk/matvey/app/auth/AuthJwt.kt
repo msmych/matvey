@@ -1,4 +1,4 @@
-package uk.matvey.server.auth
+package uk.matvey.app.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -16,8 +16,8 @@ import io.netty.handler.codec.http.cookie.CookieHeaderNames.SAMESITE
 import io.netty.handler.codec.http.cookie.CookieHeaderNames.SameSite
 import uk.matvey.kit.string.StringKit.toUuid
 import uk.matvey.pauk.exception.AuthException
-import uk.matvey.server.Conf
-import uk.matvey.server.Conf.APP_NAME
+import uk.matvey.app.Conf
+import uk.matvey.app.Conf.APP_NAME
 import java.util.UUID
 import kotlin.time.Duration.Companion.hours
 

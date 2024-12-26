@@ -1,4 +1,4 @@
-package uk.matvey.server
+package uk.matvey.app
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory

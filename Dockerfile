@@ -8,7 +8,7 @@ ENV GH_PACKAGES_RO_TOKEN=$GH_PACKAGES_RO_TOKEN
 COPY gradlew settings.gradle.kts build.gradle.kts gradle.properties /app/
 
 COPY gradle /app/gradle
-COPY app /app/server
+COPY app /app/app
 
 RUN chmod +x gradlew
 
@@ -18,8 +18,8 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY --from=builder /app/server/build /app/build
+COPY --from=builder /app/app/build /app/build
 
 EXPOSE 8443
 
-CMD ["java", "-jar", "build/libs/server-0.1.0-all.jar"]
+CMD ["java", "-jar", "build/libs/app-0.1.0-all.jar"]
