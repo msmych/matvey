@@ -56,15 +56,15 @@ private fun environment() = applicationEnvironment {
 private fun NettyApplicationEngine.Configuration.config() {
     when (Conf.profile) {
         Conf.Profile.PROD -> configureSsl(
-            privateKeyPassword = Conf.server.jksPass(),
+            privateKeyPassword = Conf.app.jksPass(),
             keyStoreFilePath = "/certs/keystore.jks",
-            keyStorePassword = Conf.server.jksPass(),
+            keyStorePassword = Conf.app.jksPass(),
             keyAlias = "matvey-p12",
         ) {
-            port = Conf.server.port
+            port = Conf.app.port
         }
         else -> connector {
-            port = Conf.server.port
+            port = Conf.app.port
         }
     }
 }

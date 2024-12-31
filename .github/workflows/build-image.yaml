@@ -22,3 +22,4 @@ jobs:
       - name: Build image
         run: |
           docker build --build-arg GH_PACKAGES_RO_TOKEN="${{ secrets.GH_PACKAGES_RO_TOKEN }}" -t $IMAGE_NAME .
+          docker push msmych/matvey-uk

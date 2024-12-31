@@ -20,7 +20,7 @@ object Conf {
     val config: Config = ConfigFactory.load("matvey.conf")
         .withFallback(ConfigFactory.load("matvey.$profile.conf".lowercase()))
 
-    val server = ServerConfig(config.getConfig("server"))
+    val app = AppConfig(config.getConfig("app"))
 
     val db = DbConfig(config.getConfig("db"))
 
@@ -28,7 +28,7 @@ object Conf {
         LOCAL, TEST, PROD
     }
 
-    class ServerConfig(config: Config) : Config by config {
+    class AppConfig(config: Config) : Config by config {
 
         val port = getInt("port")
 

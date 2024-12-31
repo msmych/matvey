@@ -25,7 +25,7 @@ object AuthJwt {
 
     const val TOKEN = "token"
 
-    private val algorithm = Algorithm.HMAC256(Conf.server.jwtSecret)
+    private val algorithm = Algorithm.HMAC256(Conf.app.jwtSecret)
 
     object Required : AuthenticationProvider(Config) {
 

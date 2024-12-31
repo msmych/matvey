@@ -49,23 +49,23 @@ object IndexHtml {
         link {
             rel = "apple-touch-icon"
             sizes = "180x180"
-            href = "${Conf.server.assetsUrl}/favicons/apple-touch-icon.png"
+            href = "${Conf.app.assetsUrl}/favicons/apple-touch-icon.png"
         }
         link {
             rel = "icon"
             type = "image/png"
             sizes = "32x32"
-            href = "${Conf.server.assetsUrl}/favicons/favicon-32x32.png"
+            href = "${Conf.app.assetsUrl}/favicons/favicon-32x32.png"
         }
         link {
             rel = "icon"
             type = "image/png"
             sizes = "16x16"
-            href = "${Conf.server.assetsUrl}/favicons/favicon-16x16.png"
+            href = "${Conf.app.assetsUrl}/favicons/favicon-16x16.png"
         }
         link {
             rel = "manifest"
-            href = "${Conf.server.assetsUrl}/favicons/site.webmanifest"
+            href = "${Conf.app.assetsUrl}/favicons/site.webmanifest"
         }
     }
 
@@ -97,9 +97,17 @@ object IndexHtml {
                     style = """
                             justify-content: space-between;
                             """.trimIndent()
-                    button {
-                        hxGet(path = "/", target = "body")
-                        +"🏠 Home"
+                    horizontal(8) {
+                        button {
+                            hxGet(path = "/", target = "body")
+                            +"🏠 Home"
+                        }
+                        if (Conf.profile != Conf.Profile.PROD) {
+                            button {
+                                hxGet(path = "/wishlist", target = "#content")
+                                +"✨ Wishlist"
+                            }
+                        }
                     }
                     if (Conf.profile != Conf.Profile.PROD) {
                         if (principal != null) {
@@ -138,13 +146,6 @@ object IndexHtml {
         }
         div {
             +"I do some coding in my spare time as well. Currently, I'm working on several open-source Kotlin libraries:"
-        }
-        div {
-            +"* "
-            a(href = "https://github.com/msmych/slon") {
-                +"Slon"
-            }
-            +": lightweight Kotlin library to work with Postgres"
         }
         div {
             +"* "
