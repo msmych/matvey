@@ -1,16 +1,16 @@
-package uk.matvey.app.wishlist
+package uk.matvey.app.falafel
 
 import io.ktor.server.html.respondHtml
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import kotlinx.html.body
-import uk.matvey.app.wishlist.WishlistHtml.wishlist
+import uk.matvey.app.falafel.FalafelHtml.falafel
 
-fun Route.wishlistRouting() {
-    route("/wishlist") {
+fun Route.falafelRouting() {
+    route("/falafel") {
         get {
-            call.respondHtml { body { wishlist() } }
+            call.respondHtml { body { falafel() } }
         }
     }
 }

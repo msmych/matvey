@@ -7,10 +7,10 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import uk.matvey.app.Services
 import uk.matvey.app.auth.AuthResource
+import uk.matvey.app.falafel.falafelRouting
 import uk.matvey.app.index.indexRouting
 import uk.matvey.app.settings.SettingsResource
 import uk.matvey.app.styles.stylesRouting
-import uk.matvey.app.wishlist.wishlistRouting
 
 fun Application.ktorModule(services: Services) {
     val resources = listOf(
@@ -25,6 +25,6 @@ fun Application.ktorModule(services: Services) {
         indexRouting()
         stylesRouting()
         resources.forEach { with(it) { routing() } }
-        wishlistRouting()
+        falafelRouting()
     }
 }

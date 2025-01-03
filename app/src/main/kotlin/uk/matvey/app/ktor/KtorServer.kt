@@ -29,7 +29,15 @@ fun ktorServer(services: Services) = embeddedServer(
 ) {
     install(StatusPages) {
         exception<AuthException> { call, _ ->
-            call.setHxRedirect("/auth?$TARGET_URL=${call.request.uri}")
+            val path = call.request.uri.let {
+                if (it.startsWith('/')) {
+                    it.substring(1)
+                } else {
+                    it
+                }
+                    .substringBefore('/')
+            }
+            call.setHxRedirect("/auth?$TARGET_URL=/$path")
             call.respond(Unauthorized, null)
         }
         exception<IllegalArgumentException> { call, e ->

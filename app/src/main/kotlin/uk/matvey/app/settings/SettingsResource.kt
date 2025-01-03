@@ -8,8 +8,6 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.patch
 import io.ktor.server.routing.route
 import kotlinx.html.body
-import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
-import uk.matvey.pauk.ktor.Resource
 import uk.matvey.app.account.AccountService
 import uk.matvey.app.account.AccountSql.updateUsername
 import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
@@ -22,6 +20,8 @@ import uk.matvey.app.settings.SettingsHtml.passwordEdit
 import uk.matvey.app.settings.SettingsHtml.settings
 import uk.matvey.app.settings.SettingsHtml.username
 import uk.matvey.app.settings.SettingsHtml.usernameEdit
+import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
+import uk.matvey.pauk.ktor.Resource
 
 class SettingsResource(
     private val accountService: AccountService,

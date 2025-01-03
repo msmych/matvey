@@ -104,8 +104,8 @@ object IndexHtml {
                         }
                         if (Conf.profile != Conf.Profile.PROD) {
                             button {
-                                hxGet(path = "/wishlist", target = "#content")
-                                +"✨ Wishlist"
+                                hxGet(path = "/falafel", target = "#content")
+                                +"🍿 Falafel"
                             }
                         }
                     }
