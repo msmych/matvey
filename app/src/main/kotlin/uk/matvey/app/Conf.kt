@@ -24,6 +24,8 @@ object Conf {
 
     val db = DbConfig(config.getConfig("db"))
 
+    val tmdb = TmdbConfig(config.getConfig("tmdb"))
+
     enum class Profile {
         LOCAL, TEST, PROD
     }
@@ -50,5 +52,10 @@ object Conf {
         val username = getString("username")
 
         val password = getString("password")
+    }
+
+    class TmdbConfig(config: Config) : Config by config {
+
+        val token = getString("token")
     }
 }

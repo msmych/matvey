@@ -11,8 +11,12 @@ import uk.matvey.app.falafel.falafelRouting
 import uk.matvey.app.index.indexRouting
 import uk.matvey.app.settings.SettingsResource
 import uk.matvey.app.styles.stylesRouting
+import uk.matvey.tmdb.TmdbClient
 
-fun Application.ktorModule(services: Services) {
+fun Application.ktorModule(
+    services: Services,
+    tmdbClient: TmdbClient,
+) {
     val resources = listOf(
         AuthResource(services.accountService),
         SettingsResource(services.accountService, services.pool),
@@ -25,6 +29,6 @@ fun Application.ktorModule(services: Services) {
         indexRouting()
         stylesRouting()
         resources.forEach { with(it) { routing() } }
-        falafelRouting()
+        falafelRouting(tmdbClient)
     }
 }

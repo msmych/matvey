@@ -21,8 +21,12 @@ import uk.matvey.app.auth.AuthResource.Companion.TARGET_URL
 import uk.matvey.pauk.exception.AuthException
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.configureSsl
+import uk.matvey.tmdb.TmdbClient
 
-fun ktorServer(services: Services) = embeddedServer(
+fun ktorServer(
+    services: Services,
+    tmdbClient: TmdbClient,
+) = embeddedServer(
     factory = Netty,
     environment = environment(),
     configure = { config() }
@@ -49,7 +53,7 @@ fun ktorServer(services: Services) = embeddedServer(
         register(AuthJwt.Optional)
     }
     install(CallLogging)
-    ktorModule(services)
+    ktorModule(services, tmdbClient)
 }
 
 private fun environment() = applicationEnvironment {
