@@ -11,6 +11,7 @@ import uk.matvey.app.falafel.falafelRouting
 import uk.matvey.app.index.indexRouting
 import uk.matvey.app.settings.SettingsResource
 import uk.matvey.app.styles.stylesRouting
+import uk.matvey.app.tmdb.TmdbResource
 import uk.matvey.tmdb.TmdbClient
 
 fun Application.ktorModule(
@@ -20,6 +21,7 @@ fun Application.ktorModule(
     val resources = listOf(
         AuthResource(services.accountService),
         SettingsResource(services.accountService, services.pool),
+        TmdbResource(tmdbClient),
     )
     routing {
         get("/health") {
