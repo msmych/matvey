@@ -13,7 +13,7 @@ object FalafelHtml {
 
     fun HtmlBlockTag.falafel() {
         vertical(16) {
-            t1("Falafel")
+            t1("Search TMDb movies")
             form {
                 hxGet("/falafel/tmdb/search", target = "#tmdb-search-result")
                 inputGroup(

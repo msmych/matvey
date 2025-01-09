@@ -2,11 +2,12 @@ package uk.matvey.tmdb
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.Year
 
 @Serializable
 data class SearchMovieResponse(
     val page: Int,
-    val results: Collection<Result>,
+    val results: List<Movie>,
     @SerialName("total_pages")
     val totalPages: Int,
     @SerialName("total_results")
@@ -14,7 +15,7 @@ data class SearchMovieResponse(
 ) {
 
     @Serializable
-    data class Result(
+    data class Movie(
         val id: Int,
         val title: String,
         val adult: Boolean,
@@ -36,5 +37,7 @@ data class SearchMovieResponse(
         val voteAverage: Double,
         @SerialName("vote_count")
         val voteCount: Int,
-    )
+    ) {
+        fun releaseYear(): Year? = releaseDate?.let { Year.parse(it.substringBefore('-')) }
+    }
 }

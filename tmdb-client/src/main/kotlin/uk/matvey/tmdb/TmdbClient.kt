@@ -60,5 +60,15 @@ class TmdbClient(
             .body()
     }
 
+    /**
+     * [Credits](https://developer.themoviedb.org/reference/movie-credits)
+     */
+    suspend fun getMovieCredits(movieId: Int, language: String = "en-US"): MovieCreditsResponse {
+        return client.get(path("/movie/$movieId/credits")){
+            url.parameters.append("language", language)
+        }
+            .body()
+    }
+
     private fun path(path: String) = "https://api.themoviedb.org/3/$path"
 }

@@ -6,8 +6,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import kotlinx.html.body
 import kotlinx.html.div
-import uk.matvey.app.html.CommonHtml.t3
-import uk.matvey.app.html.CommonHtml.vertical
+import uk.matvey.app.tmdb.TmdbHtml.tmdbSearchResult
+import uk.matvey.pauk.ktor.KtorKit.pathParam
 import uk.matvey.pauk.ktor.KtorKit.queryParam
 import uk.matvey.pauk.ktor.Resource
 import uk.matvey.tmdb.TmdbClient
@@ -21,25 +21,32 @@ class TmdbResource(
             route("/search") {
                 searchMovie()
             }
+            route("/movies") {
+                route("/{id}/details") {
+                    get {
+                        val id = call.pathParam("id").toInt()
+                        val movie = tmdbClient.getMovieCredits(id)
+                        call.respondHtml {
+                            body {
+                                div {
+                                    +"Director: ${movie.directors().joinToString { it.name }}"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     private fun Route.searchMovie() {
         get {
             val query = call.queryParam("q")
-            val movies = tmdbClient.searchMovie(query)
+            val moviesResponse = tmdbClient.searchMovie(query)
+            val movies = moviesResponse.results.take(5)
             call.respondHtml {
                 body {
-                    vertical(16) {
-                        t3("Search results:")
-                        vertical(16) {
-                            movies.results.take(10).forEach {
-                                div {
-                                    +it.title
-                                }
-                            }
-                        }
-                    }
+                    tmdbSearchResult(movies)
                 }
             }
         }

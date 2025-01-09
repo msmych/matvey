@@ -105,6 +105,7 @@ object IndexHtml {
                         if (Conf.profile != Conf.Profile.PROD) {
                             button {
                                 hxGet(path = "/falafel", target = "#content")
+                                hxPushUrl()
                                 +"🍿 Falafel"
                             }
                         }
