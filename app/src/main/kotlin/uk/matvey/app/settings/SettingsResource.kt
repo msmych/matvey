@@ -31,14 +31,7 @@ class SettingsResource(
     override fun Route.routing() {
         authJwtRequired {
             route("/settings") {
-                getLoad("/settings") {
-                    val principal = call.accountPrincipal()
-                    call.respondHtml {
-                        body {
-                            settings(principal)
-                        }
-                    }
-                }
+                getSettingsPage()
                 route("/username") {
                     get {
                         val principal = call.accountPrincipal()
@@ -102,6 +95,17 @@ class SettingsResource(
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun Route.getSettingsPage() {
+        getLoad("/settings") {
+            val principal = call.accountPrincipal()
+            call.respondHtml {
+                body {
+                    settings(principal)
                 }
             }
         }
