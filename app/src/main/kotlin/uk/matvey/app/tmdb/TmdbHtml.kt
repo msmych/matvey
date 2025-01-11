@@ -2,14 +2,13 @@ package uk.matvey.app.tmdb
 
 import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.InputType
 import kotlinx.html.b
 import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.form
 import kotlinx.html.i
 import kotlinx.html.img
-import kotlinx.html.input
+import kotlinx.html.style
 import uk.matvey.app.html.CommonHtml.horizontal
 import uk.matvey.app.html.CommonHtml.t3
 import uk.matvey.app.html.CommonHtml.vertical
@@ -32,6 +31,7 @@ object TmdbHtml {
                             height = "64"
                         }
                         div {
+                            style = "flex: 1 1 auto"
                             b {
                                 +movie.title
                             }
@@ -44,17 +44,12 @@ object TmdbHtml {
                                 }
                             }
                             div {
-                                hxGet("/falafel/tmdb/movies/${movie.id}/details")
+                                hxGet("/falafel/tmdb/movies/${movie.id}")
                                 hxTrigger("load")
                             }
                         }
                         form {
-                            hxPost("/falafel/titles")
-                            input {
-                                type = InputType.hidden
-                                name = "tmdbId"
-                                value = movie.id.toString()
-                            }
+                            hxPost("/falafel/tmdb/movies/${movie.id}")
                             button {
                                 type = ButtonType.submit
                                 +"Import"

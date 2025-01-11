@@ -7,9 +7,8 @@ import kotlinx.html.body
 import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
 import uk.matvey.app.falafel.FalafelHtml.falafel
 import uk.matvey.app.index.getLoad
-import uk.matvey.tmdb.TmdbClient
 
-fun Route.falafelRouting(tmdbClient: TmdbClient) {
+fun Route.falafelRouting() {
     authJwtRequired {
         route("/falafel") {
             getLoad("/falafel") {

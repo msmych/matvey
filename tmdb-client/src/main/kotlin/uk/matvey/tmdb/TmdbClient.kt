@@ -61,6 +61,22 @@ class TmdbClient(
     }
 
     /**
+     * Get the top level [details](https://developer.themoviedb.org/reference/movie-details) of a movie by ID.
+     */
+    suspend fun getMovieDetails(
+        movieId: Int,
+        appendToResponse: List<String>? = null,
+        language: String = "en-US"
+    ): MovieDetailsResponse {
+        client.get(path("/movie/$movieId")) {
+            appendToResponse?.let { url.parameters.append("append_to_response", it.joinToString(",")) }
+            url.parameters.append("language", language)
+        }.let { response ->
+            return MovieDetailsResponse(response.body())
+        }
+    }
+
+    /**
      * [Credits](https://developer.themoviedb.org/reference/movie-credits)
      */
     suspend fun getMovieCredits(movieId: Int, language: String = "en-US"): MovieCreditsResponse {

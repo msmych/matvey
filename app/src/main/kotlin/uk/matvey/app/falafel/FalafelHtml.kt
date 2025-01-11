@@ -15,7 +15,7 @@ object FalafelHtml {
         vertical(16) {
             t1("Search TMDb movies")
             form {
-                hxGet("/falafel/tmdb/search", target = "#tmdb-search-result")
+                hxGet("/falafel/tmdb/movies/search", target = "#tmdb-search-result")
                 inputGroup(
                     name = "q",
                     label = "Query",

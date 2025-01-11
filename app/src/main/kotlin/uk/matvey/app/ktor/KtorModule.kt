@@ -21,7 +21,7 @@ fun Application.ktorModule(
     val resources = listOf(
         AuthResource(services.accountService),
         SettingsResource(services.accountService, services.pool),
-        TmdbResource(tmdbClient),
+        TmdbResource(tmdbClient, services.pool),
     )
     routing {
         get("/health") {
@@ -31,6 +31,6 @@ fun Application.ktorModule(
         indexRouting()
         stylesRouting()
         resources.forEach { with(it) { routing() } }
-        falafelRouting(tmdbClient)
+        falafelRouting()
     }
 }
