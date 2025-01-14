@@ -23,13 +23,18 @@ object AccountMovieSql {
             .toAccountMovie()
     }
 
-    fun Connection.getAccountMovies(accountId: Int): List<AccountMovie> {
+    fun Connection.getAccountMovies(accountId: Int, filter: String): List<AccountMovie> {
+        val filterCondition = when (filter) {
+            "TO_WATCH" -> "to_watch"
+            "WATCHED" -> "watched"
+            else -> "true"
+        }
         return sendPreparedStatement(
             """
                 SELECT * 
                 FROM movies m 
                 join accounts_movies am on m.id = am.movie_id 
-                WHERE account_id = ?
+                WHERE account_id = ? and $filterCondition
                 """.trimIndent(),
             listOf(accountId)
         )

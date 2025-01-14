@@ -1,13 +1,12 @@
 package uk.matvey.app.falafel
 
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.checkBoxInput
 import kotlinx.html.div
 import kotlinx.html.form
-import kotlinx.html.h1
 import kotlinx.html.id
-import kotlinx.html.input
 import kotlinx.html.label
+import kotlinx.html.radioInput
+import kotlinx.html.textInput
 import uk.matvey.app.html.CommonHtml.col
 import uk.matvey.app.html.CommonHtml.row
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
@@ -17,41 +16,44 @@ object FalafelHtml {
 
     fun HtmlBlockTag.falafel() {
         col(16) {
-            h1 {
-                +"Falafel"
-            }
-            row(16) {
-                form {
-                    hxGet("/falafel/tmdb/movies/search", target = "#tmdb-search-result")
-                    input {
-                        name = "q"
-                        placeholder = "Search by title"
-                        required = true
-                    }
-                }
-                col {
+            form {
+                hxGet("/falafel/movies/search", target = "#search-result")
+                hxTrigger("submit, load, change")
+                row(8) {
                     label {
-                        checkBoxInput {
-                            name = "toWatch"
-                            value = "false"
+                        radioInput {
+                            name = "filter"
+                            value = "TO_WATCH"
+                            checked = true
                         }
                         +" to watch"
                     }
                     label {
-                        checkBoxInput {
-                            name = "watched"
-                            value = "false"
+                        radioInput {
+                            name = "filter"
+                            value = "WATCHED"
                         }
                         +" watched"
                     }
+                    radioInput {
+                        id = "filter-none"
+                        name = "filter"
+                        value = "NONE"
+                    }
+                    label {
+                        htmlFor = "filter-none"
+                        +" search"
+                    }
+                    label {
+                        textInput {
+                            name = "q"
+                            placeholder = "Search by title"
+                        }
+                    }
                 }
             }
-            col {
-                hxGet("/falafel/movies")
-                hxTrigger("load")
-            }
             div {
-                id = "tmdb-search-result"
+                id = "search-result"
             }
         }
     }
