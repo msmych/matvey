@@ -7,7 +7,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import uk.matvey.app.Services
 import uk.matvey.app.auth.AuthResource
-import uk.matvey.app.falafel.falafelRouting
+import uk.matvey.app.falafel.FalafelResource
 import uk.matvey.app.index.indexRouting
 import uk.matvey.app.settings.SettingsResource
 import uk.matvey.app.styles.stylesRouting
@@ -22,6 +22,7 @@ fun Application.ktorModule(
         AuthResource(services.accountService),
         SettingsResource(services.accountService, services.pool),
         TmdbResource(tmdbClient, services.pool),
+        FalafelResource(tmdbClient, services.pool),
     )
     routing {
         get("/health") {
@@ -31,6 +32,5 @@ fun Application.ktorModule(
         indexRouting()
         stylesRouting()
         resources.forEach { with(it) { routing() } }
-        falafelRouting()
     }
 }

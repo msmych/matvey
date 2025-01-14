@@ -1,6 +1,6 @@
 create table if not exists accounts
 (
-    id         uuid          not null default gen_random_uuid() primary key,
+    id         serial        not null primary key,
     username   varchar(255)  not null,
     state      varchar(31)   not null,
     tags       varchar(63)[] not null default '{}',

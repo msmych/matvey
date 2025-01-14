@@ -5,16 +5,21 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import uk.matvey.kit.json.JsonKit.JSON
+import uk.matvey.kit.json.JsonKit.arr
+import uk.matvey.kit.json.JsonKit.objOrNull
+import uk.matvey.tmdb.MovieCreditsResponse.CastMember
+import uk.matvey.tmdb.MovieCreditsResponse.CrewMember
 
 class MovieDetailsResponse(
     val jsonObject: JsonObject,
 ) {
 
     val movieDetails = JSON.decodeFromJsonElement<MovieDetails>(jsonObject)
-    val credits = try {
-        JSON.decodeFromJsonElement<MovieCreditsResponse>(jsonObject)
-    } catch (e: Exception) {
-        null
+    val cast = jsonObject.objOrNull("credits")?.let { credits ->
+        JSON.decodeFromJsonElement<List<CastMember>>(credits.arr("cast"))
+    }
+    val crew = jsonObject.objOrNull("credits")?.let { credits ->
+        JSON.decodeFromJsonElement<List<CrewMember>>(credits.arr("crew"))
     }
 
     @Serializable
@@ -25,7 +30,7 @@ class MovieDetailsResponse(
         @SerialName("backdrop_path")
         val backdropPath: String? = null,
         @SerialName("belongs_to_collection")
-        val belongsToCollection: String? = null,
+        val belongsToCollection: TmdbCollection? = null,
         val budget: Int,
         val genres: List<Genre>,
         val homepage: String?,
@@ -43,7 +48,7 @@ class MovieDetailsResponse(
         @SerialName("production_countries")
         val productionCountries: List<ProductionCountry>,
         @SerialName("release_date")
-        val releaseDate: String,
+        val releaseDate: String? = null,
         val revenue: Int,
         val runtime: Int,
         @SerialName("spoken_languages")
@@ -56,6 +61,16 @@ class MovieDetailsResponse(
         @SerialName("vote_count")
         val voteCount: Int,
     ) {
+
+        @Serializable
+        data class TmdbCollection(
+            val id: Int,
+            val name: String,
+            @SerialName("poster_path")
+            val posterPath: String? = null,
+            @SerialName("backdrop_path")
+            val backdropPath: String? = null,
+        )
 
         @Serializable
         data class Genre(

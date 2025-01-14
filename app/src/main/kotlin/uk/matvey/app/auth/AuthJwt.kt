@@ -14,11 +14,9 @@ import io.ktor.util.date.GMTDate
 import io.ktor.util.date.plus
 import io.netty.handler.codec.http.cookie.CookieHeaderNames.SAMESITE
 import io.netty.handler.codec.http.cookie.CookieHeaderNames.SameSite
-import uk.matvey.kit.string.StringKit.toUuid
-import uk.matvey.pauk.exception.AuthException
 import uk.matvey.app.Conf
 import uk.matvey.app.Conf.APP_NAME
-import java.util.UUID
+import uk.matvey.pauk.exception.AuthException
 import kotlin.time.Duration.Companion.hours
 
 object AuthJwt {
@@ -77,7 +75,7 @@ object AuthJwt {
             }
         }?.let {
             try {
-                context.principal(AccountPrincipal(it.subject.toUuid(), it.getClaim("username").asString()))
+                context.principal(AccountPrincipal(it.subject.toInt(), it.getClaim("username").asString()))
             } catch (e: Exception) {
                 context.call.response.cookies.append(TOKEN, "", expires = GMTDate.START)
                 throw AuthException(cause = e)
@@ -88,7 +86,7 @@ object AuthJwt {
         }
     }
 
-    fun ApplicationCall.setTokenCookie(id: UUID, username: String) {
+    fun ApplicationCall.setTokenCookie(id: Int, username: String) {
         response.cookies.append(
             name = TOKEN,
             value = JWT.create()

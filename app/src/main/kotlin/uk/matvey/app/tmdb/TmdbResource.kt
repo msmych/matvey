@@ -5,12 +5,14 @@ import com.github.jasync.sql.db.postgresql.PostgreSQLConnection
 import io.ktor.server.html.respondHtml
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
-import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import kotlinx.html.body
-import kotlinx.html.div
-import uk.matvey.app.title.TitleSql.addTitle
-import uk.matvey.app.tmdb.TmdbHtml.tmdbSearchResult
+import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
+import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
+import uk.matvey.app.movie.AccountMovie
+import uk.matvey.app.movie.AccountMovieSql.getAccountMovies
+import uk.matvey.app.movie.Movie
+import uk.matvey.app.tmdb.TmdbHtml.movieSearchResults
 import uk.matvey.pauk.ktor.KtorKit.pathParam
 import uk.matvey.pauk.ktor.KtorKit.queryParam
 import uk.matvey.pauk.ktor.Resource
@@ -22,14 +24,15 @@ class TmdbResource(
 ) : Resource {
 
     override fun Route.routing() {
-        route("/falafel/tmdb") {
-            route("/movies") {
-                route("/search") {
-                    searchMovie()
-                }
-                route("/{id}") {
-                    getMovieDetails()
-                    importMovie()
+        authJwtRequired {
+            route("/falafel/tmdb") {
+                route("/movies") {
+                    route("/search") {
+                        searchMovie()
+                    }
+                    route("/{id}") {
+                        getMovieDetails()
+                    }
                 }
             }
         }
@@ -41,8 +44,9 @@ class TmdbResource(
             val movie = tmdbClient.getMovieCredits(id)
             call.respondHtml {
                 body {
-                    div {
-                        +"Director: ${movie.directors().joinToString { it.name }}"
+                    movie.directors().takeIf { it.isNotEmpty() }?.let { directors ->
+                        +"by "
+                        +directors.joinToString { it.name }
                     }
                 }
             }
@@ -51,24 +55,18 @@ class TmdbResource(
 
     private fun Route.searchMovie() {
         get {
+            val principal = call.accountPrincipal()
             val query = call.queryParam("q")
             val moviesResponse = tmdbClient.searchMovie(query)
             val movies = moviesResponse.results.take(5)
+            val accountMovies = pool.getAccountMovies(principal.id)
+                .associateBy { it.movie.id }
             call.respondHtml {
                 body {
-                    tmdbSearchResult(movies)
-                }
-            }
-        }
-    }
-
-    private fun Route.importMovie() {
-        post {
-            val details = tmdbClient.getMovieDetails(call.pathParam("id").toInt(), listOf("credits"))
-            pool.addTitle(details.movieDetails, details.credits)
-            call.respondHtml {
-                body {
-                    +"Done"
+                    movieSearchResults(movies.map {
+                        accountMovies[it.id]
+                            ?: AccountMovie(Movie.from(it), false, false)
+                    }, emptyMap())
                 }
             }
         }

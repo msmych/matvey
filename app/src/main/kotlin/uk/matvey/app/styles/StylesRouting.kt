@@ -31,6 +31,9 @@ import kotlinx.css.fontFamily
 import kotlinx.css.fontSize
 import kotlinx.css.fontWeight
 import kotlinx.css.gap
+import kotlinx.css.h1
+import kotlinx.css.h2
+import kotlinx.css.h3
 import kotlinx.css.input
 import kotlinx.css.margin
 import kotlinx.css.marginLeft
@@ -51,11 +54,20 @@ private fun CssBuilder.stylesCss() {
         margin = Margin(0.px)
         fontFamily = """"Mona Sans", sans-serif"""
     }
-    rule(".vertical") {
+    h1 {
+        margin = Margin(0.px)
+    }
+    h2 {
+        margin = Margin(0.px)
+    }
+    h3 {
+        margin = Margin(0.px)
+    }
+    rule(".col") {
         display = Display.flex
         flexDirection = FlexDirection.column
     }
-    rule(".horizontal") {
+    rule(".row") {
         display = Display.flex
         flexDirection = FlexDirection.row
     }
@@ -68,7 +80,6 @@ private fun CssBuilder.stylesCss() {
     buttonCss()
     inputCss()
     gapCss()
-    tCss()
     rule(".card") {
         padding = Padding(16.px)
         borderRadius = 4.px
@@ -125,20 +136,5 @@ private fun CssBuilder.gapCss() {
         rule(".gap-$i") {
             gap = i.px
         }
-    }
-}
-
-private fun CssBuilder.tCss() {
-    rule(".t1") {
-        fontWeight = FontWeight.bold
-        fontSize = 2.em
-    }
-    rule(".t2") {
-        fontWeight = FontWeight.bold
-        fontSize = 1.5.em
-    }
-    rule(".t3") {
-        fontWeight = FontWeight.bold
-        fontSize = 1.2.em
     }
 }
