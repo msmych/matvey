@@ -9,15 +9,15 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.util.date.GMTDate
-import uk.matvey.kit.net.NetKit.queryParamOrNull
-import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
-import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
-import uk.matvey.pauk.ktor.Resource
 import uk.matvey.app.account.AccountService
 import uk.matvey.app.auth.AuthHtml.auth
 import uk.matvey.app.auth.AuthJwt.TOKEN
 import uk.matvey.app.auth.AuthJwt.setTokenCookie
 import uk.matvey.app.index.getLoad
+import uk.matvey.kit.net.NetKit.queryParamOrNull
+import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
+import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
+import uk.matvey.pauk.ktor.Resource
 import java.net.URI
 
 class AuthResource(

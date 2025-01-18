@@ -13,7 +13,7 @@ import uk.matvey.app.account.AccountSql.updateUsername
 import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
 import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
 import uk.matvey.app.auth.AuthJwt.setTokenCookie
-import uk.matvey.app.index.IndexHtml.settingsMenuItem
+import uk.matvey.app.index.MenuHtml.settingsTab
 import uk.matvey.app.index.getLoad
 import uk.matvey.app.settings.SettingsHtml.password
 import uk.matvey.app.settings.SettingsHtml.passwordEdit
@@ -50,7 +50,7 @@ class SettingsResource(
                         call.respondHtml {
                             body {
                                 username(username)
-                                settingsMenuItem(username, oob = true)
+                                settingsTab(username, true, true)
                             }
                         }
                     }

@@ -20,6 +20,7 @@ import kotlinx.css.border
 import kotlinx.css.borderColor
 import kotlinx.css.borderRadius
 import kotlinx.css.borderStyle
+import kotlinx.css.borderWidth
 import kotlinx.css.button
 import kotlinx.css.color
 import kotlinx.css.cursor
@@ -83,6 +84,12 @@ private fun CssBuilder.stylesCss() {
     rule(".card") {
         padding = Padding(16.px)
         borderRadius = 4.px
+    }
+    rule("button.active") {
+        fontWeight = FontWeight.bold
+    }
+    rule("input[type=radio]:checked") {
+        borderWidth = 6.px
     }
     rule("input[name=q]") {
         display = Display.none

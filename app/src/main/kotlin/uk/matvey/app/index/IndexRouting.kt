@@ -6,17 +6,17 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingHandler
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
-import uk.matvey.pauk.ktor.KtorHtmx.isHxRequest
-import uk.matvey.app.index.IndexHtml.index
 import uk.matvey.app.auth.AccountPrincipal
 import uk.matvey.app.auth.AuthJwt.Optional.authJwtOptional
+import uk.matvey.app.index.IndexHtml.index
+import uk.matvey.pauk.ktor.KtorHtmx.isHxRequest
 
 fun Route.indexRouting() {
     route("/") {
         authJwtOptional {
             get {
                 val principal = call.principal<AccountPrincipal>()
-                call.respondHtml { index(principal) }
+                call.respondHtml { index(principal, null) }
             }
         }
     }

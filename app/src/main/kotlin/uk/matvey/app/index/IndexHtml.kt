@@ -1,11 +1,9 @@
 package uk.matvey.app.index
 
-import kotlinx.html.DIV
 import kotlinx.html.HTML
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.a
 import kotlinx.html.body
-import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.head
 import kotlinx.html.id
@@ -19,12 +17,10 @@ import kotlinx.html.title
 import uk.matvey.app.Conf
 import uk.matvey.app.auth.AccountPrincipal
 import uk.matvey.app.html.CommonHtml.col
-import uk.matvey.app.html.CommonHtml.row
+import uk.matvey.app.index.MenuHtml.menu
 import uk.matvey.pauk.html.HtmlKit.stylesheet
 import uk.matvey.pauk.ktor.KtorHtmx.htmxScript
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
-import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
-import uk.matvey.pauk.ktor.KtorHtmx.hxSwapOob
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
 
 object IndexHtml {
@@ -93,35 +89,7 @@ object IndexHtml {
                         width: 80%;
                         min-width: 320px;
                         """.trimIndent()
-                row(8) {
-                    style = """
-                            justify-content: space-between;
-                            """.trimIndent()
-                    row(8) {
-                        button {
-                            hxGet(path = "/", target = "body")
-                            +"🏠 Home"
-                        }
-                        if (Conf.profile != Conf.Profile.PROD) {
-                            button {
-                                hxGet(path = "/falafel", target = "#content")
-                                hxPushUrl()
-                                +"🍿 Falafel"
-                            }
-                        }
-                    }
-                    if (Conf.profile != Conf.Profile.PROD) {
-                        if (principal != null) {
-                            settingsMenuItem(principal.username)
-                        } else {
-                            button {
-                                hxGet(path = "/auth", target = "#content")
-                                hxPushUrl()
-                                +"👤 Login"
-                            }
-                        }
-                    }
-                }
+                menu(principal)
                 div {
                     id = "content"
                     if (loadPage != null) {
@@ -135,7 +103,7 @@ object IndexHtml {
         }
     }
 
-    fun DIV.home() = col(gap = 8, classes = "card") {
+    fun HtmlBlockTag.home() = col(gap = 8, classes = "card") {
         div {
             +"Hi, my name is Matvey"
         }
@@ -174,18 +142,6 @@ object IndexHtml {
             a(href = "https://x.com/matvey_uk") {
                 +"X account"
             }
-        }
-    }
-
-    fun HtmlBlockTag.settingsMenuItem(username: String, oob: Boolean = false) {
-        button {
-            id = "menu-item-settings"
-            hxGet(path = "/settings", target = "#content")
-            hxPushUrl()
-            if (oob) {
-                hxSwapOob()
-            }
-            +"👤 $username"
         }
     }
 }
