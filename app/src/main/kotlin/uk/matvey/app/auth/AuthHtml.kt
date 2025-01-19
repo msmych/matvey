@@ -15,12 +15,14 @@ import uk.matvey.app.html.CommonHtml.col
 import uk.matvey.app.html.CommonHtml.inputGroup
 import uk.matvey.kit.json.JsonKit.JSON
 import uk.matvey.pauk.ktor.KtorHtmx.hxPost
+import uk.matvey.pauk.ktor.KtorHtmx.hxSwap
 
 object AuthHtml {
 
     fun HTML.auth(targetUrl: String?) = body {
         form(classes = "card") {
-            hxPost(path = "/auth", swap = "none")
+            hxPost("/auth")
+            hxSwap("none")
             targetUrl?.let {
                 attributes["hx-vals"] = JSON.encodeToString(buildJsonObject {
                     put(TARGET_URL, it)

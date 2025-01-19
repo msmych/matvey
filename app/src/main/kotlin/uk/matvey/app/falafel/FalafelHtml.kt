@@ -10,6 +10,7 @@ import kotlinx.html.textInput
 import uk.matvey.app.html.CommonHtml.col
 import uk.matvey.app.html.CommonHtml.row
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
+import uk.matvey.pauk.ktor.KtorHtmx.hxTarget
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
 
 object FalafelHtml {
@@ -17,7 +18,8 @@ object FalafelHtml {
     fun HtmlBlockTag.falafel() {
         col(16) {
             form {
-                hxGet("/falafel/movies/search", target = "#search-result")
+                hxGet("/falafel/movies/search")
+                hxTarget("#search-result")
                 hxTrigger("submit, load, change")
                 row(8) {
                     label {

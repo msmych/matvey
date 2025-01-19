@@ -93,7 +93,7 @@ object IndexHtml {
                 div {
                     id = "content"
                     if (loadPage != null) {
-                        hxGet(path = loadPage)
+                        hxGet(loadPage)
                         hxTrigger("load delay:10ms")
                     } else {
                         home()

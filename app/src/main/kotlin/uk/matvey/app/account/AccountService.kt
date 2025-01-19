@@ -7,7 +7,6 @@ import uk.matvey.app.account.AccountSql.findAccount
 import uk.matvey.app.account.AccountSql.getAccount
 import uk.matvey.app.account.AccountSql.updatePassHash
 import uk.matvey.app.crypto.CryptoService
-import uk.matvey.pauk.exception.AuthException
 
 class AccountService(
     private val pool: ConnectionPool<PostgreSQLConnection>,

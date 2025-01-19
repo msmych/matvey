@@ -16,9 +16,9 @@ import io.ktor.server.request.uri
 import io.ktor.server.response.respondText
 import uk.matvey.app.Conf
 import uk.matvey.app.Services
+import uk.matvey.app.account.AuthException
 import uk.matvey.app.auth.AuthJwt
 import uk.matvey.app.auth.AuthResource.Companion.TARGET_URL
-import uk.matvey.pauk.exception.AuthException
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.configureSsl
 import uk.matvey.tmdb.TmdbClient

@@ -16,7 +16,7 @@ import io.netty.handler.codec.http.cookie.CookieHeaderNames.SAMESITE
 import io.netty.handler.codec.http.cookie.CookieHeaderNames.SameSite
 import uk.matvey.app.Conf
 import uk.matvey.app.Conf.APP_NAME
-import uk.matvey.pauk.exception.AuthException
+import uk.matvey.app.account.AuthException
 import kotlin.time.Duration.Companion.hours
 
 object AuthJwt {

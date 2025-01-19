@@ -7,7 +7,7 @@ import kotlinx.html.InputType
 import kotlinx.html.div
 import kotlinx.html.input
 import kotlinx.html.label
-import uk.matvey.kit.string.StringKit.capital
+import uk.matvey.kit.string.StringKit.capitalize
 
 object CommonHtml {
 
@@ -29,7 +29,7 @@ object CommonHtml {
         name: String,
         type: InputType = InputType.text,
         required: Boolean = false,
-        label: String? = capital(name),
+        label: String? = capitalize(name),
         placeholder: String? = label,
         inputBlock: INPUT.() -> Unit = {},
     ) = col(gap = 2, classes = "input-group") {

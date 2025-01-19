@@ -11,6 +11,7 @@ import uk.matvey.app.html.CommonHtml.row
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
 import uk.matvey.pauk.ktor.KtorHtmx.hxSwapOob
+import uk.matvey.pauk.ktor.KtorHtmx.hxTarget
 
 object MenuHtml {
 
@@ -32,20 +33,23 @@ object MenuHtml {
     }
 
     fun HtmlBlockTag.homeTab(active: Boolean) = button {
-        hxGet(path = "/", target = "body")
+        hxGet("/")
+        hxTarget("body")
         hxPushUrl()
         tabLabel(HOME_LABEL, active)
     }
 
     fun HtmlBlockTag.falafelTab(active: Boolean) = button {
-        hxGet(path = "/falafel", target = "#content")
+        hxGet("/falafel")
+        hxTarget("#content")
         hxPushUrl()
         tabLabel(FALAFEL_LABEL, active)
     }
 
     fun HtmlBlockTag.settingsTab(username: String, active: Boolean, oob: Boolean) = button {
         id = "menu-item-settings"
-        hxGet(path = "/settings", target = "#content")
+        hxGet("/settings")
+        hxTarget("#content")
         hxPushUrl()
         if (oob) {
             hxSwapOob()
@@ -54,7 +58,8 @@ object MenuHtml {
     }
 
     private fun HtmlBlockTag.loginTab(active: Boolean) = button {
-        hxGet(path = "/auth", target = "#content")
+        hxGet("/auth")
+        hxTarget("#content")
         hxPushUrl()
         tabLabel("👤 Login", active)
     }

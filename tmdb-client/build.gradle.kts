@@ -9,6 +9,15 @@ val coroutinesVersion: String by project
 val assertjVersion: String by project
 val junitVersion: String by project
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
 repositories {
     mavenCentral()
     maven {

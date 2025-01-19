@@ -18,6 +18,8 @@ import uk.matvey.pauk.ktor.KtorHtmx.hxConfirm
 import uk.matvey.pauk.ktor.KtorHtmx.hxDelete
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPatch
+import uk.matvey.pauk.ktor.KtorHtmx.hxSwap
+import uk.matvey.pauk.ktor.KtorHtmx.hxTarget
 
 object SettingsHtml {
 
@@ -37,13 +39,15 @@ object SettingsHtml {
         h3 { +"Username:" }
         h3 { +username }
         button {
-            hxGet(path = "/settings/username-edit", target = "closest div.row")
+            hxGet("/settings/username-edit")
+            hxTarget("closest div.row")
             +"📝"
         }
     }
 
     fun HtmlBlockTag.usernameEdit() = form(classes = "row gap-8 center") {
-        hxPatch(path = "/settings/username", target = "closest div.row")
+        hxPatch("/settings/username")
+        hxTarget("closest div.row")
         h3 { +"Username:" }
         textInput {
             name = "username"
@@ -56,7 +60,8 @@ object SettingsHtml {
                 +"✅"
             }
             button {
-                hxGet(path = "/settings/username", target = "closest div.row")
+                hxGet("/settings/username")
+                hxTarget("closest div.row")
                 +"❌"
             }
         }
@@ -66,13 +71,16 @@ object SettingsHtml {
         h3 { +"Password:" }
         h3 { +"****" }
         button {
-            hxGet(path = "/settings/password-edit", target = "closest .row", swap = outerHTML)
+            hxGet("/settings/password-edit")
+            hxTarget("closest .row")
+            hxSwap(outerHTML)
             +"📝"
         }
     }
 
     fun HtmlBlockTag.passwordEdit() = form(classes = "row gap-8 center") {
-        hxPatch(path = "/settings/password", swap = outerHTML)
+        hxPatch("/settings/password")
+        hxSwap(outerHTML)
         h3 { +"Password:" }
         row(gap = 8, classes = "wrap") {
             passwordInput {
@@ -91,7 +99,9 @@ object SettingsHtml {
                     +"✅"
                 }
                 button {
-                    hxGet(path = "/settings/password", target = "closest form", swap = outerHTML)
+                    hxGet("/settings/password")
+                    hxTarget("closest form")
+                    hxSwap(outerHTML)
                     +"❌"
                 }
             }
