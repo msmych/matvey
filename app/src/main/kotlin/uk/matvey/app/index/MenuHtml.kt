@@ -15,19 +15,19 @@ import uk.matvey.pauk.ktor.KtorHtmx.hxTarget
 
 object MenuHtml {
 
-    fun HtmlBlockTag.menu(principal: AccountPrincipal?) = row(8) {
+    fun HtmlBlockTag.menu(principal: AccountPrincipal?, activeTab: MenuTab) = row(8) {
         style = """ justify-content: space-between; """.trimIndent()
         row(8) {
-            homeTab(true)
+            homeTab(activeTab == MenuTab.HOME)
             if (Conf.profile != Conf.Profile.PROD) {
-                falafelTab(false)
+                falafelTab(activeTab == MenuTab.FALAFEL)
             }
         }
         if (Conf.profile != Conf.Profile.PROD) {
             if (principal != null) {
-                settingsTab(principal.username, false, false)
+                settingsTab(principal.username, activeTab == MenuTab.SETTINGS, false)
             } else {
-                loginTab(false)
+                loginTab(activeTab == MenuTab.AUTH)
             }
         }
     }
@@ -41,7 +41,7 @@ object MenuHtml {
 
     fun HtmlBlockTag.falafelTab(active: Boolean) = button {
         hxGet("/falafel")
-        hxTarget("#content")
+        hxTarget("body")
         hxPushUrl()
         tabLabel(FALAFEL_LABEL, active)
     }
@@ -49,7 +49,7 @@ object MenuHtml {
     fun HtmlBlockTag.settingsTab(username: String, active: Boolean, oob: Boolean) = button {
         id = "menu-item-settings"
         hxGet("/settings")
-        hxTarget("#content")
+        hxTarget("body")
         hxPushUrl()
         if (oob) {
             hxSwapOob()
@@ -59,7 +59,7 @@ object MenuHtml {
 
     private fun HtmlBlockTag.loginTab(active: Boolean) = button {
         hxGet("/auth")
-        hxTarget("#content")
+        hxTarget("body")
         hxPushUrl()
         tabLabel("👤 Login", active)
     }
@@ -76,4 +76,8 @@ object MenuHtml {
 
     private const val HOME_LABEL = "🏠 Home"
     private const val FALAFEL_LABEL = "🍿 Falafel"
+
+    enum class MenuTab {
+        HOME, FALAFEL, SETTINGS, AUTH
+    }
 }

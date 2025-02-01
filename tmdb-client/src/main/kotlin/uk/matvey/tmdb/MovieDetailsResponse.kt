@@ -7,8 +7,8 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import uk.matvey.kit.json.JsonKit.JSON
 import uk.matvey.kit.json.JsonKit.arr
 import uk.matvey.kit.json.JsonKit.objOrNull
-import uk.matvey.tmdb.MovieCreditsResponse.CastMember
-import uk.matvey.tmdb.MovieCreditsResponse.CrewMember
+import uk.matvey.tmdb.CreditsResponse.CastPerson
+import uk.matvey.tmdb.CreditsResponse.CrewPerson
 
 class MovieDetailsResponse(
     val jsonObject: JsonObject,
@@ -16,10 +16,10 @@ class MovieDetailsResponse(
 
     val movieDetails = JSON.decodeFromJsonElement<MovieDetails>(jsonObject)
     val cast = jsonObject.objOrNull("credits")?.let { credits ->
-        JSON.decodeFromJsonElement<List<CastMember>>(credits.arr("cast"))
+        JSON.decodeFromJsonElement<List<CastPerson>>(credits.arr("cast"))
     }
     val crew = jsonObject.objOrNull("credits")?.let { credits ->
-        JSON.decodeFromJsonElement<List<CrewMember>>(credits.arr("crew"))
+        JSON.decodeFromJsonElement<List<CrewPerson>>(credits.arr("crew"))
     }
 
     @Serializable

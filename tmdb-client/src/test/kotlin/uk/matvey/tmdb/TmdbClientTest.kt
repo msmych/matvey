@@ -41,12 +41,26 @@ class TmdbClientTest {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "TMDB_TOKEN", matches = ".+")
+    fun `get credits`() = runTest {
+        // given
+        val client = tmdbClient()
+
+        // when
+        val rs = client.getCredits(426063)
+
+        // then
+        assertThat(rs.cast).isNotEmpty
+        assertThat(rs.crew).isNotEmpty
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "TMDB_TOKEN", matches = ".+")
     fun `get movie credits`() = runTest {
         // given
         val client = tmdbClient()
 
         // when
-        val rs = client.getMovieCredits(426063)
+        val rs = client.getMovieCredits(138781)
 
         // then
         assertThat(rs.cast).isNotEmpty

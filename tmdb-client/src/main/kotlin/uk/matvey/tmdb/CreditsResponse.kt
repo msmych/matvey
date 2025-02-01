@@ -4,17 +4,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieCreditsResponse(
+data class CreditsResponse(
     val id: Int,
-    val cast: List<CastMember>,
-    val crew: List<CrewMember>
+    val cast: List<CastPerson>,
+    val crew: List<CrewPerson>
 ) {
 
     @Serializable
-    data class CastMember(
+    data class CastPerson(
         val id: Int,
         val adult: Boolean,
-        val gender: Int?,
+        val gender: Int? = null,
         @SerialName("known_for_department")
         val knownForDepartment: String,
         val name: String,
@@ -32,7 +32,7 @@ data class MovieCreditsResponse(
     )
 
     @Serializable
-    data class CrewMember(
+    data class CrewPerson(
         val id: Int,
         val adult: Boolean,
         val gender: Int?,

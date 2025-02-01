@@ -9,6 +9,7 @@ import uk.matvey.app.Services
 import uk.matvey.app.auth.AuthResource
 import uk.matvey.app.falafel.FalafelResource
 import uk.matvey.app.index.indexRouting
+import uk.matvey.app.movie.MovieResource
 import uk.matvey.app.settings.SettingsResource
 import uk.matvey.app.styles.stylesRouting
 import uk.matvey.app.tmdb.TmdbResource
@@ -20,6 +21,7 @@ fun Application.ktorModule(
 ) {
     val resources = listOf(
         AuthResource(services.accountService),
+        MovieResource(tmdbClient, services.pool),
         SettingsResource(services.accountService, services.pool),
         TmdbResource(tmdbClient, services.pool),
         FalafelResource(tmdbClient, services.pool),

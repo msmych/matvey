@@ -13,7 +13,8 @@ import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
 import uk.matvey.app.director.DirectorSql.addDirector
 import uk.matvey.app.director.DirectorSql.getDirectors
 import uk.matvey.app.falafel.FalafelHtml.falafel
-import uk.matvey.app.index.getLoad
+import uk.matvey.app.index.IndexHtml.page
+import uk.matvey.app.index.MenuHtml.MenuTab
 import uk.matvey.app.movie.AccountMovie
 import uk.matvey.app.movie.AccountMovieSql.getAccountMovie
 import uk.matvey.app.movie.AccountMovieSql.getAccountMovies
@@ -40,9 +41,7 @@ class FalafelResource(
     override fun Route.routing() {
         authJwtRequired {
             route("/falafel") {
-                getLoad("/falafel") {
-                    call.respondHtml { body { falafel() } }
-                }
+                getFalafelPage()
                 route("/movies") {
                     route("/search") {
                         searchMovies()
@@ -50,6 +49,17 @@ class FalafelResource(
                     route("/{id}") {
                         updateMovie()
                     }
+                }
+            }
+        }
+    }
+
+    private fun Route.getFalafelPage() {
+        get {
+            val principal = call.accountPrincipal()
+            call.respondHtml {
+                page(principal, MenuTab.FALAFEL) {
+                    falafel()
                 }
             }
         }

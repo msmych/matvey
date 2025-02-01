@@ -1,7 +1,6 @@
 package uk.matvey.app.movie
 
 import uk.matvey.kit.time.TimeKit.instant
-import uk.matvey.tmdb.SearchMovieResponse
 import java.time.Instant
 import java.time.LocalDate
 
@@ -18,7 +17,7 @@ data class Movie(
 
     companion object {
 
-        fun from(tmdbMovie: SearchMovieResponse.Movie): Movie {
+        fun from(tmdbMovie: uk.matvey.tmdb.Movie): Movie {
             return Movie(
                 tmdbMovie.id,
                 tmdbMovie.title,

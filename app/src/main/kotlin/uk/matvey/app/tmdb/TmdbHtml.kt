@@ -1,6 +1,7 @@
 package uk.matvey.app.tmdb
 
 import kotlinx.html.HtmlBlockTag
+import kotlinx.html.a
 import kotlinx.html.b
 import kotlinx.html.checkBoxInput
 import kotlinx.html.div
@@ -9,20 +10,19 @@ import kotlinx.html.i
 import kotlinx.html.img
 import kotlinx.html.label
 import kotlinx.html.style
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import uk.matvey.app.director.Director
 import uk.matvey.app.html.CommonHtml.col
 import uk.matvey.app.html.CommonHtml.row
 import uk.matvey.app.movie.AccountMovie
-import uk.matvey.kit.json.JsonKit.JSON
 import uk.matvey.pauk.htmx.Htmx.Swap.outerHTML
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
 import uk.matvey.pauk.ktor.KtorHtmx.hxPatch
+import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
 import uk.matvey.pauk.ktor.KtorHtmx.hxSwap
 import uk.matvey.pauk.ktor.KtorHtmx.hxTarget
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
+import uk.matvey.pauk.ktor.KtorHtmx.hxVals
 
 object TmdbHtml {
 
@@ -34,22 +34,26 @@ object TmdbHtml {
             col(16) {
                 movies.forEach { movie ->
                     row(8) {
-                        movie.movie.posterPath?.let { posterPath ->
-                            img {
-                                style = """
-                                    |max-width: 44px;
-                                    |max-height: 66px;
-                                    |""".trimMargin()
-                                src = "https://image.tmdb.org/t/p/w440_and_h660_face$posterPath"
-                                alt = "${movie.movie.title} poster"
-                            }
+                        img {
+                            width = "44px"
+                            height = "66px"
+                            src = movie.movie.posterPath?.let {
+                                "https://image.tmdb.org/t/p/w440_and_h660_face$it"
+                            } ?: ""
+                            alt = "${movie.movie.title} poster"
                         }
                         div {
                             style = "flex: 1 1 0"
-                            b {
-                                +movie.movie.title
+                            a {
+                                href = "/falafel/movies/${movie.movie.id}"
+                                hxGet("/falafel/movies/${movie.movie.id}")
+                                hxTarget("body")
+                                hxPushUrl()
+                                b {
+                                    +movie.movie.title
+                                }
+                                movie.movie.releaseDate?.year?.let { year -> +" ($year)" }
                             }
-                            movie.movie.releaseDate?.year?.let { year -> +" ($year)" }
                             movie.movie.originalTitle?.takeUnless { it == movie.movie.title }?.let { originalTitle ->
                                 div {
                                     i {
@@ -83,9 +87,9 @@ object TmdbHtml {
                 hxSwap(outerHTML)
                 hxTarget("closest label")
                 hxTrigger("change")
-                attributes["hx-vals"] = JSON.encodeToString(buildJsonObject {
+                hxVals {
                     put("toWatch", (!movie.toWatch).toString())
-                })
+                }
                 name = "toWatch"
                 checked = movie.toWatch
             }
@@ -100,9 +104,9 @@ object TmdbHtml {
                 hxSwap(outerHTML)
                 hxTarget("closest label")
                 hxTrigger("change")
-                attributes["hx-vals"] = JSON.encodeToString(buildJsonObject {
+                hxVals {
                     put("watched", (!movie.watched).toString())
-                })
+                }
                 name = "watched"
                 checked = movie.watched
             }

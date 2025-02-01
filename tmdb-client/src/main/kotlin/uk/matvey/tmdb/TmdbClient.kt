@@ -79,8 +79,18 @@ class TmdbClient(
     /**
      * [Credits](https://developer.themoviedb.org/reference/movie-credits)
      */
-    suspend fun getMovieCredits(movieId: Int, language: String = "en-US"): MovieCreditsResponse {
+    suspend fun getCredits(movieId: Int, language: String = "en-US"): CreditsResponse {
         return client.get(path("/movie/$movieId/credits")){
+            url.parameters.append("language", language)
+        }
+            .body()
+    }
+
+    /**
+     * Get the [movie credits](https://api.themoviedb.org/3/person/{person_id}/movie_credits) for a person.
+     */
+    suspend fun getMovieCredits(personId: Int, language: String = "en-US"): PersonMovieCreditsResponse {
+        return client.get(path("/person/$personId/movie_credits")){
             url.parameters.append("language", language)
         }
             .body()

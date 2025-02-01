@@ -13,8 +13,9 @@ import uk.matvey.app.account.AccountSql.updateUsername
 import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
 import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
 import uk.matvey.app.auth.AuthJwt.setTokenCookie
+import uk.matvey.app.index.IndexHtml.page
+import uk.matvey.app.index.MenuHtml.MenuTab
 import uk.matvey.app.index.MenuHtml.settingsTab
-import uk.matvey.app.index.getLoad
 import uk.matvey.app.settings.SettingsHtml.password
 import uk.matvey.app.settings.SettingsHtml.passwordEdit
 import uk.matvey.app.settings.SettingsHtml.settings
@@ -33,78 +34,102 @@ class SettingsResource(
             route("/settings") {
                 getSettingsPage()
                 route("/username") {
-                    get {
-                        val principal = call.accountPrincipal()
-                        call.respondHtml {
-                            body {
-                                username(principal.username)
-                            }
-                        }
-                    }
-                    patch {
-                        val principal = call.accountPrincipal()
-                        val params = call.receiveParamsMap()
-                        val username = params.getValue("username")
-                        pool.updateUsername(principal.id, username)
-                        call.setTokenCookie(principal.id, username)
-                        call.respondHtml {
-                            body {
-                                username(username)
-                                settingsTab(username, true, true)
-                            }
-                        }
-                    }
+                    getUsername()
+                    updateUsername()
                 }
                 route("/username-edit") {
-                    get {
-                        call.respondHtml {
-                            body {
-                                usernameEdit()
-                            }
-                        }
-                    }
+                    getUsernameEdit()
                 }
                 route("/password") {
-                    get {
-                        call.respondHtml {
-                            body {
-                                password()
-                            }
-                        }
-                    }
-                    patch {
-                        val principal = call.accountPrincipal()
-                        val params = call.receiveParamsMap()
-                        accountService.updatePassword(
-                            principal.id,
-                            params.getValue("currentPassword"),
-                            params.getValue("newPassword")
-                        )
-                        call.respondHtml {
-                            body {
-                                password()
-                            }
-                        }
-                    }
+                    getPassword()
+                    updatePassword()
                 }
                 route("/password-edit") {
-                    get {
-                        call.respondHtml {
-                            body {
-                                passwordEdit()
-                            }
-                        }
-                    }
+                    getPasswordEdit()
+                }
+            }
+        }
+    }
+
+    private fun Route.getPasswordEdit() {
+        get {
+            call.respondHtml {
+                body {
+                    passwordEdit()
+                }
+            }
+        }
+    }
+
+    private fun Route.updatePassword() {
+        patch {
+            val principal = call.accountPrincipal()
+            val params = call.receiveParamsMap()
+            accountService.updatePassword(
+                principal.id,
+                params.getValue("currentPassword"),
+                params.getValue("newPassword")
+            )
+            call.respondHtml {
+                body {
+                    password()
+                }
+            }
+        }
+    }
+
+    private fun Route.getPassword() {
+        get {
+            call.respondHtml {
+                body {
+                    password()
+                }
+            }
+        }
+    }
+
+    private fun Route.getUsernameEdit() {
+        get {
+            call.respondHtml {
+                body {
+                    usernameEdit()
+                }
+            }
+        }
+    }
+
+    private fun Route.updateUsername() {
+        patch {
+            val principal = call.accountPrincipal()
+            val params = call.receiveParamsMap()
+            val username = params.getValue("username")
+            pool.updateUsername(principal.id, username)
+            call.setTokenCookie(principal.id, username)
+            call.respondHtml {
+                body {
+                    username(username)
+                    settingsTab(username, true, true)
+                }
+            }
+        }
+    }
+
+    private fun Route.getUsername() {
+        get {
+            val principal = call.accountPrincipal()
+            call.respondHtml {
+                body {
+                    username(principal.username)
                 }
             }
         }
     }
 
     private fun Route.getSettingsPage() {
-        getLoad("/settings") {
+        get {
             val principal = call.accountPrincipal()
             call.respondHtml {
-                body {
+                page(principal, MenuTab.SETTINGS) {
                     settings(principal)
                 }
             }

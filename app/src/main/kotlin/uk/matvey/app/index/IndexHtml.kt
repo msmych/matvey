@@ -2,41 +2,37 @@ package uk.matvey.app.index
 
 import kotlinx.html.HTML
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.a
 import kotlinx.html.body
-import kotlinx.html.div
 import kotlinx.html.head
-import kotlinx.html.id
+import kotlinx.html.header
 import kotlinx.html.img
 import kotlinx.html.lang
 import kotlinx.html.link
-import kotlinx.html.meta
 import kotlinx.html.script
 import kotlinx.html.style
 import kotlinx.html.title
 import uk.matvey.app.Conf
 import uk.matvey.app.auth.AccountPrincipal
 import uk.matvey.app.html.CommonHtml.col
+import uk.matvey.app.index.MenuHtml.MenuTab
 import uk.matvey.app.index.MenuHtml.menu
+import uk.matvey.pauk.html.HtmlKit.Viewport.Companion.viewport
 import uk.matvey.pauk.html.HtmlKit.stylesheet
 import uk.matvey.pauk.ktor.KtorHtmx.htmxScript
-import uk.matvey.pauk.ktor.KtorHtmx.hxGet
-import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
 
 object IndexHtml {
 
-    fun HTML.index(principal: AccountPrincipal?, loadPage: String? = null) {
+    fun HTML.page(principal: AccountPrincipal?, activeTab: MenuTab, block: HtmlBlockTag.() -> Unit) {
         lang = "en"
-        head()
-        body(principal, loadPage)
+        pageHead()
+        pageBody(principal, activeTab) {
+            block()
+        }
     }
 
-    private fun HTML.head() = head {
+    private fun HTML.pageHead() = head {
         title("Matvey")
-        meta {
-            name = "viewport"
-            content = "width=device-width, initial-scale=1"
-        }
+        viewport()
         script {
             src = "/assets/script.js"
         }
@@ -65,83 +61,29 @@ object IndexHtml {
         }
     }
 
-    private fun HTML.body(principal: AccountPrincipal?, loadPage: String? = null) = body {
+    fun HTML.pageBody(
+        principal: AccountPrincipal?,
+        activeTab: MenuTab,
+        block: HtmlBlockTag.() -> Unit
+    ) = body {
         col(16) {
-            div {
-                style = """
-                        |height: 64px;
-                        |overflow: hidden;
-                        |position: relative;
-                        |""".trimMargin()
-                img {
-                    width = "100%"
-                    style = """
-                            |position: absolute;
-                            |transform: rotate(180deg);
-                            |filter: invert(0);
-                            |""".trimMargin()
-                    src = "https://live.staticflickr.com/961/41778488722_4612755202_k.jpg"
-                }
-            }
+            pageHeader()
             col(32) {
                 style = """
                         margin: 0 auto 0;
                         width: 80%;
                         min-width: 320px;
                         """.trimIndent()
-                menu(principal)
-                div {
-                    id = "content"
-                    if (loadPage != null) {
-                        hxGet(loadPage)
-                        hxTrigger("load delay:10ms")
-                    } else {
-                        home()
-                    }
-                }
+                menu(principal, activeTab)
+                block()
             }
         }
     }
 
-    fun HtmlBlockTag.home() = col(gap = 8, classes = "card") {
-        div {
-            +"Hi, my name is Matvey"
-        }
-        div {
-            +"I live in London and work as a "
-            a(href = "https://www.linkedin.com/in/matvey-smychkov-743b21175/") {
-                +"software engineer"
-            }
-        }
-        div {
-            +"I do some coding in my spare time as well. Currently, I'm working on several open-source Kotlin libraries:"
-        }
-        div {
-            +"* "
-            a(href = "https://github.com/msmych/telek") {
-                +"Telek"
-            }
-            +": Kotlin Telegram Bot API client"
-        }
-        div {
-            +"* "
-            a(href = "https://github.com/msmych/kit") {
-                +"Kit"
-            }
-            +": misc Kotlin utilities I find useful as an extension of standard library"
-        }
-        div {
-            +"* "
-            a(href = "https://github.com/msmych/pauk") {
-                +"Pauk"
-            }
-            +": Kotlin HTTP utilities"
-        }
-        div {
-            +"More stuff is on the way. in the meantime, you can check out my "
-            a(href = "https://x.com/matvey_uk") {
-                +"X account"
-            }
+    private fun HtmlBlockTag.pageHeader() = header {
+        img {
+            width = "100%"
+            src = "https://live.staticflickr.com/961/41778488722_4612755202_k.jpg"
         }
     }
 }
