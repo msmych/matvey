@@ -34,5 +34,4 @@ class CryptoService {
         secureRandom.nextBytes(salt)
         return salt
     }
-
 }

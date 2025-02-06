@@ -4,7 +4,6 @@ import com.github.jasync.sql.db.Connection
 import com.github.jasync.sql.db.RowData
 import kotlinx.coroutines.future.await
 import uk.matvey.kit.time.TimeKit.instant
-import java.util.UUID
 
 object AccountSql {
 
@@ -18,11 +17,11 @@ object AccountSql {
     const val CREATED_AT = "created_at"
     const val UPDATED_AT = "updated_at"
 
-    suspend fun Connection.getAccount(id: UUID): Account {
+    suspend fun Connection.getAccount(id: Int): Account {
         return sendQuery(
             """
                     select * from $ACCOUNTS
-                    where $ID = '$id'
+                    where $ID = $id
                 """.trimIndent(),
         )
             .await()
@@ -61,7 +60,7 @@ object AccountSql {
             .toAccount()
     }
 
-    suspend fun Connection.updateUsername(id: UUID, username: String) {
+    suspend fun Connection.updateUsername(id: Int, username: String) {
         sendPreparedStatement(
             """
                 update $ACCOUNTS
@@ -73,7 +72,7 @@ object AccountSql {
             .await()
     }
 
-    suspend fun Connection.updatePassHash(id: UUID, passHash: String) {
+    suspend fun Connection.updatePassHash(id: Int, passHash: String) {
         sendPreparedStatement(
             """
                 update $ACCOUNTS

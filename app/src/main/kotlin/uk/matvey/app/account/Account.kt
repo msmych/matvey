@@ -1,9 +1,7 @@
 package uk.matvey.app.account
 
-import java.util.UUID
-
 data class Account(
-    val id: UUID,
+    val id: Int,
     val username: String,
     val state: State,
     val tags: List<Tag>,

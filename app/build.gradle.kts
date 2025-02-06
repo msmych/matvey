@@ -46,6 +46,8 @@ dependencies {
     implementation("uk.matvey:kit:$kitVersion")
     implementation("uk.matvey:pauk:$paukVersion")
 
+    implementation(project(":tmdb-client"))
+
     runtimeOnly("org.flywaydb:flyway-database-postgresql:$flywayVersion")
     runtimeOnly("org.postgresql:postgresql:$postgresVersion")
 

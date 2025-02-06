@@ -16,20 +16,32 @@ import io.ktor.server.request.uri
 import io.ktor.server.response.respondText
 import uk.matvey.app.Conf
 import uk.matvey.app.Services
+import uk.matvey.app.account.AuthException
 import uk.matvey.app.auth.AuthJwt
 import uk.matvey.app.auth.AuthResource.Companion.TARGET_URL
-import uk.matvey.pauk.exception.AuthException
 import uk.matvey.pauk.ktor.KtorHtmx.setHxRedirect
 import uk.matvey.pauk.ktor.KtorKit.configureSsl
+import uk.matvey.tmdb.TmdbClient
 
-fun ktorServer(services: Services) = embeddedServer(
+fun ktorServer(
+    services: Services,
+    tmdbClient: TmdbClient,
+) = embeddedServer(
     factory = Netty,
     environment = environment(),
     configure = { config() }
 ) {
     install(StatusPages) {
         exception<AuthException> { call, _ ->
-            call.setHxRedirect("/auth?$TARGET_URL=${call.request.uri}")
+            val path = call.request.uri.let {
+                if (it.startsWith('/')) {
+                    it.substring(1)
+                } else {
+                    it
+                }
+                    .substringBefore('/')
+            }
+            call.setHxRedirect("/auth?$TARGET_URL=/$path")
             call.respond(Unauthorized, null)
         }
         exception<IllegalArgumentException> { call, e ->
@@ -41,7 +53,7 @@ fun ktorServer(services: Services) = embeddedServer(
         register(AuthJwt.Optional)
     }
     install(CallLogging)
-    ktorModule(services)
+    ktorModule(services, tmdbClient)
 }
 
 private fun environment() = applicationEnvironment {
@@ -56,15 +68,15 @@ private fun environment() = applicationEnvironment {
 private fun NettyApplicationEngine.Configuration.config() {
     when (Conf.profile) {
         Conf.Profile.PROD -> configureSsl(
-            privateKeyPassword = Conf.server.jksPass(),
+            privateKeyPassword = Conf.app.jksPass(),
             keyStoreFilePath = "/certs/keystore.jks",
-            keyStorePassword = Conf.server.jksPass(),
+            keyStorePassword = Conf.app.jksPass(),
             keyAlias = "matvey-p12",
         ) {
-            port = Conf.server.port
+            port = Conf.app.port
         }
         else -> connector {
-            port = Conf.server.port
+            port = Conf.app.port
         }
     }
 }
