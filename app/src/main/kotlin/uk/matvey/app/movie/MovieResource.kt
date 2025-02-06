@@ -7,6 +7,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import kotlinx.html.h1
+import kotlinx.html.p
 import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
 import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
 import uk.matvey.app.index.IndexHtml.page
@@ -14,6 +15,7 @@ import uk.matvey.app.index.MenuHtml
 import uk.matvey.pauk.ktor.KtorKit.pathParam
 import uk.matvey.pauk.ktor.Resource
 import uk.matvey.tmdb.TmdbClient
+import java.time.LocalDate
 
 class MovieResource(
     private val tmdbClient: TmdbClient,
@@ -40,7 +42,16 @@ class MovieResource(
             call.respondHtml {
                 page(principal, MenuHtml.MenuTab.FALAFEL) {
                     h1 {
-                        +"${details.movieDetails.title} (${details.movieDetails.releaseDate})"
+                        +details.movieDetails.title
+                        details.movieDetails.releaseDate?.let { releaseDate ->
+                            val year = LocalDate.parse(releaseDate).year
+                            +" ($year)"
+                        }
+                    }
+                    details.movieDetails.overview?.let {
+                        p {
+                            +it
+                        }
                     }
                 }
             }
