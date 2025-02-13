@@ -21,7 +21,7 @@ data class Movie(
             return Movie(
                 tmdbMovie.id,
                 tmdbMovie.title,
-                tmdbMovie.releaseDate?.let(LocalDate::parse),
+                tmdbMovie.releaseDate(),
                 tmdbMovie.originalTitle,
                 tmdbMovie.posterPath,
                 listOf(),

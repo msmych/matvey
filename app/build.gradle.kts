@@ -9,12 +9,12 @@ group = "uk.matvey"
 version = "0.1.0"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_22
+    targetCompatibility = JavaVersion.VERSION_22
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(22)
 }
 
 repositories {
@@ -34,11 +34,9 @@ val flywayVersion: String by project
 val jasyncVersion: String by project
 val junitVersion: String by project
 val kitVersion: String by project
-val kotlinCssVersion: String by project
 val ktorVersion: String by project
 val paukVersion: String by project
 val postgresVersion: String by project
-val slonVersion: String by project
 
 dependencies {
     implementation("com.github.jasync-sql:jasync-postgresql:$jasyncVersion")

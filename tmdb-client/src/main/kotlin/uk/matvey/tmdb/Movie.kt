@@ -2,7 +2,7 @@ package uk.matvey.tmdb
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.Year
+import java.time.LocalDate
 
 @Serializable
 data class Movie(
@@ -28,5 +28,5 @@ data class Movie(
     @SerialName("vote_count")
     val voteCount: Int,
 ) {
-    fun releaseYear(): Year? = releaseDate?.let { Year.parse(it.substringBefore('-')) }
+    fun releaseDate() = releaseDate?.takeUnless { it.isBlank() }?.let { LocalDate.parse(it) }
 }
