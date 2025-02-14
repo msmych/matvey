@@ -7,7 +7,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import uk.matvey.app.Services
 import uk.matvey.app.auth.AuthResource
-import uk.matvey.app.falafel.FalafelResource
+import uk.matvey.app.vtornik.VtornikResource
 import uk.matvey.app.index.indexRouting
 import uk.matvey.app.movie.MovieResource
 import uk.matvey.app.settings.SettingsResource
@@ -24,7 +24,7 @@ fun Application.ktorModule(
         MovieResource(tmdbClient, services.pool),
         SettingsResource(services.accountService, services.pool),
         TmdbResource(tmdbClient, services.pool),
-        FalafelResource(tmdbClient, services.pool),
+        VtornikResource(tmdbClient, services.pool),
     )
     routing {
         get("/health") {

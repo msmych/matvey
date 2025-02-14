@@ -1,4 +1,4 @@
-package uk.matvey.app.falafel
+package uk.matvey.app.vtornik
 
 import com.github.jasync.sql.db.pool.ConnectionPool
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection
@@ -8,11 +8,11 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.patch
 import io.ktor.server.routing.route
 import kotlinx.html.body
+import uk.matvey.app.auth.AuthJwt.Optional.authJwtOptional
 import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
-import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
+import uk.matvey.app.auth.AuthJwt.Required.accountPrincipalOrNull
 import uk.matvey.app.director.DirectorSql.addDirector
 import uk.matvey.app.director.DirectorSql.getDirectors
-import uk.matvey.app.falafel.FalafelHtml.falafel
 import uk.matvey.app.index.IndexHtml.page
 import uk.matvey.app.index.MenuHtml.MenuTab
 import uk.matvey.app.movie.AccountMovie
@@ -26,6 +26,7 @@ import uk.matvey.app.movie.MovieSql.findMovie
 import uk.matvey.app.tmdb.TmdbHtml.movieSearchResults
 import uk.matvey.app.tmdb.TmdbHtml.toggleToWatch
 import uk.matvey.app.tmdb.TmdbHtml.toggleWatched
+import uk.matvey.app.vtornik.VtornikHtml.vtornik
 import uk.matvey.pauk.ktor.KtorKit.pathParam
 import uk.matvey.pauk.ktor.KtorKit.queryParam
 import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
@@ -33,15 +34,15 @@ import uk.matvey.pauk.ktor.Resource
 import uk.matvey.tmdb.TmdbClient
 import java.util.concurrent.CompletableFuture
 
-class FalafelResource(
+class VtornikResource(
     private val tmdbClient: TmdbClient,
     private val pool: ConnectionPool<PostgreSQLConnection>
 ) : Resource {
 
     override fun Route.routing() {
-        authJwtRequired {
-            route("/falafel") {
-                getFalafelPage()
+        authJwtOptional {
+            route("/vtornik") {
+                getVtornikPage()
                 route("/movies") {
                     route("/search") {
                         searchMovies()
@@ -54,12 +55,12 @@ class FalafelResource(
         }
     }
 
-    private fun Route.getFalafelPage() {
+    private fun Route.getVtornikPage() {
         get {
-            val principal = call.accountPrincipal()
+            val principal = call.accountPrincipalOrNull()
             call.respondHtml {
-                page(principal, MenuTab.FALAFEL) {
-                    falafel()
+                page(principal, MenuTab.VTORNIK) {
+                    vtornik(principal)
                 }
             }
         }

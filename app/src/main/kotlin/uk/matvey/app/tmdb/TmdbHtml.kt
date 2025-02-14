@@ -45,8 +45,8 @@ object TmdbHtml {
                         div {
                             style = "flex: 1 1 0"
                             a {
-                                href = "/falafel/movies/${movie.movie.id}"
-                                hxGet("/falafel/movies/${movie.movie.id}")
+                                href = "/vtornik/movies/${movie.movie.id}"
+                                hxGet("/vtornik/movies/${movie.movie.id}")
                                 hxTarget("body")
                                 hxPushUrl()
                                 b {
@@ -65,7 +65,7 @@ object TmdbHtml {
                                 if (movie.movie.directorsIds.isNotEmpty() && movie.movie.directorsIds.all { it in directors }) {
                                     +"by ${movie.movie.directorsIds.joinToString { directors.getValue(it).name }}"
                                 } else {
-                                    hxGet("/falafel/tmdb/movies/${movie.movie.id}")
+                                    hxGet("/vtornik/tmdb/movies/${movie.movie.id}")
                                     hxTrigger("load")
                                 }
                             }
@@ -83,7 +83,7 @@ object TmdbHtml {
     fun HtmlBlockTag.toggleToWatch(movie: AccountMovie) {
         label {
             checkBoxInput {
-                hxPatch("/falafel/movies/${movie.movie.id}")
+                hxPatch("/vtornik/movies/${movie.movie.id}")
                 hxSwap(outerHTML)
                 hxTarget("closest label")
                 hxTrigger("change")
@@ -100,7 +100,7 @@ object TmdbHtml {
     fun HtmlBlockTag.toggleWatched(movie: AccountMovie) {
         label {
             checkBoxInput {
-                hxPatch("/falafel/movies/${movie.movie.id}")
+                hxPatch("/vtornik/movies/${movie.movie.id}")
                 hxSwap(outerHTML)
                 hxTarget("closest label")
                 hxTrigger("change")

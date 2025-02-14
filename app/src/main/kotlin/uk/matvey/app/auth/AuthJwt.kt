@@ -37,7 +37,9 @@ object AuthJwt {
             processAuth(context, required = true)
         }
 
-        fun ApplicationCall.accountPrincipal() = requireNotNull(principal<AccountPrincipal>()) {
+        fun ApplicationCall.accountPrincipalOrNull() = principal<AccountPrincipal>()
+
+        fun ApplicationCall.accountPrincipal() = requireNotNull(accountPrincipalOrNull()) {
             "Account principal is missing"
         }
     }

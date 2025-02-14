@@ -24,7 +24,7 @@ class MovieResource(
 
     override fun Route.routing() {
         authJwtRequired {
-            route("/falafel") {
+            route("/vtornik") {
                 route("/movies") {
                     route("/{id}") {
                         getMovie()
@@ -40,7 +40,7 @@ class MovieResource(
             val movieId = call.pathParam("id").toInt()
             val details = tmdbClient.getMovieDetails(movieId)
             call.respondHtml {
-                page(principal, MenuHtml.MenuTab.FALAFEL) {
+                page(principal, MenuHtml.MenuTab.VTORNIK) {
                     h1 {
                         +details.movieDetails.title
                         details.movieDetails.releaseDate?.let { releaseDate ->

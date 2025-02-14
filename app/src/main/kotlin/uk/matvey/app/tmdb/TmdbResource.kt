@@ -19,7 +19,7 @@ class TmdbResource(
 
     override fun Route.routing() {
         authJwtRequired {
-            route("/falafel/tmdb") {
+            route("/vtornik/tmdb") {
                 route("/movies") {
                     route("/search") {
                     }

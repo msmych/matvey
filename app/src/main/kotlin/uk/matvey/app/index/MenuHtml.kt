@@ -20,7 +20,7 @@ object MenuHtml {
         row(8) {
             homeTab(activeTab == MenuTab.HOME)
             if (Conf.profile != Conf.Profile.PROD) {
-                falafelTab(activeTab == MenuTab.FALAFEL)
+                vtornikTab(activeTab == MenuTab.VTORNIK)
             }
         }
         if (Conf.profile != Conf.Profile.PROD) {
@@ -39,11 +39,11 @@ object MenuHtml {
         tabLabel(HOME_LABEL, active)
     }
 
-    fun HtmlBlockTag.falafelTab(active: Boolean) = button {
-        hxGet("/falafel")
+    fun HtmlBlockTag.vtornikTab(active: Boolean) = button {
+        hxGet("/vtornik")
         hxTarget("body")
         hxPushUrl()
-        tabLabel(FALAFEL_LABEL, active)
+        tabLabel(VTORNIK_LABEL, active)
     }
 
     fun HtmlBlockTag.settingsTab(username: String, active: Boolean, oob: Boolean) = button {
@@ -75,9 +75,9 @@ object MenuHtml {
     }
 
     private const val HOME_LABEL = "🏠 Home"
-    private const val FALAFEL_LABEL = "🍿 Falafel"
+    private const val VTORNIK_LABEL = "🍿 Vtornik"
 
     enum class MenuTab {
-        HOME, FALAFEL, SETTINGS, AUTH
+        HOME, VTORNIK, SETTINGS, AUTH
     }
 }
