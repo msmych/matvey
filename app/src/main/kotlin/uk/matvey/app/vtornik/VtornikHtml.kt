@@ -11,6 +11,7 @@ import uk.matvey.app.auth.AccountPrincipal
 import uk.matvey.app.html.CommonHtml.col
 import uk.matvey.app.html.CommonHtml.row
 import uk.matvey.pauk.ktor.KtorHtmx.hxGet
+import uk.matvey.pauk.ktor.KtorHtmx.hxPushUrl
 import uk.matvey.pauk.ktor.KtorHtmx.hxTarget
 import uk.matvey.pauk.ktor.KtorHtmx.hxTrigger
 
@@ -20,32 +21,37 @@ object VtornikHtml {
         col(16) {
             form {
                 hxGet("/vtornik/movies/search")
+                hxPushUrl()
                 hxTarget("#search-result")
-                hxTrigger("submit, load, change")
+                principal?.let {
+                    hxTrigger("submit, load, change")
+                } ?: hxTrigger("submit, change")
                 row(8) {
-                    label {
-                        radioInput {
-                            name = "filter"
-                            value = "TO_WATCH"
-                            checked = true
+                    principal?.let {
+                        label {
+                            radioInput {
+                                name = "filter"
+                                value = "TO_WATCH"
+                                checked = true
+                            }
+                            +" to watch"
                         }
-                        +" to watch"
-                    }
-                    label {
-                        radioInput {
-                            name = "filter"
-                            value = "WATCHED"
+                        label {
+                            radioInput {
+                                name = "filter"
+                                value = "WATCHED"
+                            }
+                            +" watched"
                         }
-                        +" watched"
-                    }
-                    radioInput {
-                        id = "filter-none"
-                        name = "filter"
-                        value = "NONE"
-                    }
-                    label {
-                        htmlFor = "filter-none"
-                        +" search"
+                        radioInput {
+                            id = "filter-none"
+                            name = "filter"
+                            value = "NONE"
+                        }
+                        label {
+                            htmlFor = "filter-none"
+                            +" search"
+                        }
                     }
                     label {
                         textInput {

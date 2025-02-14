@@ -29,6 +29,7 @@ import uk.matvey.app.tmdb.TmdbHtml.toggleWatched
 import uk.matvey.app.vtornik.VtornikHtml.vtornik
 import uk.matvey.pauk.ktor.KtorKit.pathParam
 import uk.matvey.pauk.ktor.KtorKit.queryParam
+import uk.matvey.pauk.ktor.KtorKit.queryParamOrNull
 import uk.matvey.pauk.ktor.KtorKit.receiveParamsMap
 import uk.matvey.pauk.ktor.Resource
 import uk.matvey.tmdb.TmdbClient
@@ -68,10 +69,10 @@ class VtornikResource(
 
     private fun Route.searchMovies() {
         get {
-            val principal = call.accountPrincipal()
             val query = call.queryParam("q")
-            when (val filter = call.queryParam("filter")) {
+            when (val filter = call.queryParamOrNull("filter")) {
                 "TO_WATCH", "WATCHED" -> {
+                    val principal = call.accountPrincipal()
                     val accountMovies = pool.getAccountMovies(principal.id, filter)
                     val directors = accountMovies.takeIf { it.isNotEmpty() }?.let {
                         pool.getDirectors(accountMovies.map { it.movie.directorsIds }.flatten().distinct())
@@ -83,9 +84,12 @@ class VtornikResource(
                     }
                 }
                 else -> {
+                    val principal = call.accountPrincipalOrNull()
                     val moviesResponse = tmdbClient.searchMovie(query)
                     val movies = moviesResponse.results.take(5)
-                    val accountMoviesById = pool.getAccountMovies(principal.id, "NONE").associateBy { it.movie.id }
+                    val accountMoviesById = principal?.let { p ->
+                        pool.getAccountMovies(p.id, "NONE").associateBy { it.movie.id }
+                    } ?: emptyMap()
                     call.respondHtml {
                         body {
                             movieSearchResults(movies.map {

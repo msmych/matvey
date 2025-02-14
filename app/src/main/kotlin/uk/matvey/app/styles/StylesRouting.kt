@@ -80,12 +80,6 @@ private fun CssBuilder.stylesCss() {
     rule("input[type=radio]:checked") {
         borderWidth = 6.px
     }
-    rule("input[name=q]") {
-        display = Display.none
-    }
-    rule("input[name=filter][value=NONE]:checked ~ label > input[name=q]") {
-        display = Display.block
-    }
 }
 
 private fun CssBuilder.headerCss() {

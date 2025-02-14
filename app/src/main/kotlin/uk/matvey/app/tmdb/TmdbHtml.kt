@@ -65,7 +65,7 @@ object TmdbHtml {
                                 if (movie.movie.directorsIds.isNotEmpty() && movie.movie.directorsIds.all { it in directors }) {
                                     +"by ${movie.movie.directorsIds.joinToString { directors.getValue(it).name }}"
                                 } else {
-                                    hxGet("/vtornik/tmdb/movies/${movie.movie.id}")
+                                    hxGet("/vtornik/movies/${movie.movie.id}/directors")
                                     hxTrigger("load")
                                 }
                             }

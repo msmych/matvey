@@ -6,10 +6,11 @@ import io.ktor.server.html.respondHtml
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
+import kotlinx.html.body
 import kotlinx.html.h1
 import kotlinx.html.p
-import uk.matvey.app.auth.AuthJwt.Required.accountPrincipal
-import uk.matvey.app.auth.AuthJwt.Required.authJwtRequired
+import uk.matvey.app.auth.AuthJwt.Optional.authJwtOptional
+import uk.matvey.app.auth.AuthJwt.Required.accountPrincipalOrNull
 import uk.matvey.app.index.IndexHtml.page
 import uk.matvey.app.index.MenuHtml
 import uk.matvey.pauk.ktor.KtorKit.pathParam
@@ -23,11 +24,14 @@ class MovieResource(
 ) : Resource {
 
     override fun Route.routing() {
-        authJwtRequired {
+        authJwtOptional {
             route("/vtornik") {
                 route("/movies") {
                     route("/{id}") {
                         getMovie()
+                        route("/directors") {
+                            getMovieDirectors()
+                        }
                     }
                 }
             }
@@ -36,7 +40,7 @@ class MovieResource(
 
     private fun Route.getMovie() {
         get {
-            val principal = call.accountPrincipal()
+            val principal = call.accountPrincipalOrNull()
             val movieId = call.pathParam("id").toInt()
             val details = tmdbClient.getMovieDetails(movieId)
             call.respondHtml {
@@ -52,6 +56,21 @@ class MovieResource(
                         p {
                             +it
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun Route.getMovieDirectors() {
+        get {
+            val id = call.pathParam("id").toInt()
+            val movie = tmdbClient.getCredits(id)
+            call.respondHtml {
+                body {
+                    movie.directors().takeIf { it.isNotEmpty() }?.let { directors ->
+                        +"by "
+                        +directors.joinToString { it.name }
                     }
                 }
             }
