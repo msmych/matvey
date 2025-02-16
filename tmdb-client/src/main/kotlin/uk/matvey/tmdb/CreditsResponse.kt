@@ -48,7 +48,9 @@ data class CreditsResponse(
         val creditId: String,
         val department: String,
         val job: String,
-    )
+    ) {
+        fun isDirector() = job == "Director"
+    }
 
-    fun directors() = crew.filter { it.job == "Director" }
+    fun directors() = crew.filter { it.isDirector() }
 }

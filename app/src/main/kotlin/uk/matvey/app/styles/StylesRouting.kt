@@ -16,6 +16,7 @@ import kotlinx.css.Margin
 import kotlinx.css.Overflow
 import kotlinx.css.Padding
 import kotlinx.css.Position
+import kotlinx.css.TextOverflow
 import kotlinx.css.alignItems
 import kotlinx.css.background
 import kotlinx.css.backgroundColor
@@ -42,6 +43,7 @@ import kotlinx.css.h2
 import kotlinx.css.h3
 import kotlinx.css.header
 import kotlinx.css.height
+import kotlinx.css.img
 import kotlinx.css.input
 import kotlinx.css.margin
 import kotlinx.css.marginLeft
@@ -54,6 +56,7 @@ import kotlinx.css.properties.deg
 import kotlinx.css.properties.rotate
 import kotlinx.css.properties.transform
 import kotlinx.css.px
+import kotlinx.css.textOverflow
 import kotlinx.css.width
 import uk.matvey.pauk.ktor.KtorKit.respondCss
 
@@ -76,6 +79,11 @@ private fun CssBuilder.stylesCss() {
     p {
         margin = Margin(0.px)
         borderRadius = 4.px
+    }
+    img {
+        overflow = Overflow.hidden
+        textOverflow = TextOverflow.ellipsis
+        fontSize = 0.7.em
     }
     rule("input[type=radio]:checked") {
         borderWidth = 6.px

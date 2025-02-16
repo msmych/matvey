@@ -23,9 +23,9 @@ import uk.matvey.app.movie.AccountMovieSql.updateAccountMovieWatched
 import uk.matvey.app.movie.Movie
 import uk.matvey.app.movie.MovieSql.addMovie
 import uk.matvey.app.movie.MovieSql.findMovie
-import uk.matvey.app.tmdb.TmdbHtml.movieSearchResults
 import uk.matvey.app.tmdb.TmdbHtml.toggleToWatch
 import uk.matvey.app.tmdb.TmdbHtml.toggleWatched
+import uk.matvey.app.vtornik.VtornikHtml.movieSearchResults
 import uk.matvey.app.vtornik.VtornikHtml.vtornik
 import uk.matvey.pauk.ktor.KtorKit.pathParam
 import uk.matvey.pauk.ktor.KtorKit.queryParam
@@ -79,7 +79,7 @@ class VtornikResource(
                     } ?: emptyList()
                     call.respondHtml {
                         body {
-                            movieSearchResults(accountMovies, directors.associateBy { it.id })
+                            movieSearchResults(accountMovies, directors.associateBy { it.id }, principal)
                         }
                     }
                 }
@@ -92,10 +92,14 @@ class VtornikResource(
                     } ?: emptyMap()
                     call.respondHtml {
                         body {
-                            movieSearchResults(movies.map {
-                                accountMoviesById[it.id]
-                                    ?: AccountMovie(Movie.from(it), false, false)
-                            }, emptyMap())
+                            movieSearchResults(
+                                movies.map {
+                                    accountMoviesById[it.id]
+                                        ?: AccountMovie(Movie.from(it), false, false)
+                                },
+                                emptyMap(),
+                                principal
+                            )
                         }
                     }
                 }
