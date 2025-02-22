@@ -1,8 +1,10 @@
 package uk.matvey.app.vtornik
 
+import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.a
 import kotlinx.html.b
+import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.form
 import kotlinx.html.h3
@@ -66,8 +68,13 @@ object VtornikHtml {
                     label {
                         textInput {
                             name = "q"
+                            required = true
                             placeholder = "Search by title"
                         }
+                    }
+                    button {
+                        type = ButtonType.submit
+                        +"Search"
                     }
                 }
             }
