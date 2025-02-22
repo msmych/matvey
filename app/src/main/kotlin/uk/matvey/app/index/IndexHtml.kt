@@ -4,8 +4,6 @@ import kotlinx.html.HTML
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.body
 import kotlinx.html.head
-import kotlinx.html.header
-import kotlinx.html.img
 import kotlinx.html.lang
 import kotlinx.html.link
 import kotlinx.html.script
@@ -14,6 +12,7 @@ import kotlinx.html.title
 import uk.matvey.app.Conf
 import uk.matvey.app.auth.AccountPrincipal
 import uk.matvey.app.html.CommonHtml.col
+import uk.matvey.app.index.IndexHeaderHtml.pageHeader
 import uk.matvey.app.index.MenuHtml.MenuTab
 import uk.matvey.app.index.MenuHtml.menu
 import uk.matvey.pauk.html.HtmlKit.Viewport.Companion.viewport
@@ -67,7 +66,7 @@ object IndexHtml {
         block: HtmlBlockTag.() -> Unit
     ) = body {
         col(16) {
-            pageHeader()
+            pageHeader(activeTab)
             col(32) {
                 style = """
                         margin: 0 auto 0;
@@ -77,13 +76,6 @@ object IndexHtml {
                 menu(principal, activeTab)
                 block()
             }
-        }
-    }
-
-    private fun HtmlBlockTag.pageHeader() = header {
-        img {
-            width = "100%"
-            src = "https://live.staticflickr.com/961/41778488722_4612755202_k.jpg"
         }
     }
 }

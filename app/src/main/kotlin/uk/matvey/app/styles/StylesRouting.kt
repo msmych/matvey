@@ -31,7 +31,6 @@ import kotlinx.css.color
 import kotlinx.css.cursor
 import kotlinx.css.display
 import kotlinx.css.em
-import kotlinx.css.filter
 import kotlinx.css.flexDirection
 import kotlinx.css.flexWrap
 import kotlinx.css.fontFamily
@@ -52,9 +51,6 @@ import kotlinx.css.overflow
 import kotlinx.css.p
 import kotlinx.css.padding
 import kotlinx.css.position
-import kotlinx.css.properties.deg
-import kotlinx.css.properties.rotate
-import kotlinx.css.properties.transform
 import kotlinx.css.px
 import kotlinx.css.textOverflow
 import kotlinx.css.width
@@ -98,10 +94,6 @@ private fun CssBuilder.headerCss() {
     }
     rule("header > img") {
         position = Position.absolute
-        transform {
-            rotate(180.deg)
-        }
-        filter = "invert(0)"
     }
 }
 
